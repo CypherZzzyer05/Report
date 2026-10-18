@@ -1,0 +1,11 @@
+* text=auto
+*.md text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.txt text eol=lf
+*.py text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+*.csv -text whitespace=cr-at-eol
+*.npz binary
+*.png binary

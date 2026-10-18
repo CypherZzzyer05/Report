@@ -1,0 +1,470 @@
+{
+  "geometry_values": [
+    649.7604076511419,
+    161.1566330153756,
+    284.88377288849,
+    133.54673339593725,
+    116.4992120505661,
+    -33.64481402341028,
+    39.36335222367701
+  ],
+  "cases": [
+    {
+      "name": "旧版：Au / SiO2 / 四聚体",
+      "label": "旧版：Au / 有限 SiO2 / 四聚体；T 在空气",
+      "status": 2,
+      "R_features": [
+        {
+          "index": 118,
+          "wavelength_nm": 818.1181181181181,
+          "value": 0.13232505321502686,
+          "prominence": 0.7108118534088135,
+          "half_prominence_width_nm": 5.255752717462759
+        },
+        {
+          "index": 189,
+          "wavelength_nm": 889.1891891891892,
+          "value": 0.8995668292045593,
+          "prominence": 0.03958237171173096,
+          "half_prominence_width_nm": 4.412583012341602
+        },
+        {
+          "index": 299,
+          "wavelength_nm": 999.2992992992993,
+          "value": 0.6772516965866089,
+          "prominence": 0.289192259311676,
+          "half_prominence_width_nm": 3.968314303116651
+        }
+      ],
+      "T_peaks": [
+        {
+          "index": 94,
+          "wavelength_nm": 794.0940940940941,
+          "value": 0.0010689342161640525,
+          "prominence": 0.000811748526757583,
+          "half_prominence_width_nm": 74.57061891013686
+        },
+        {
+          "index": 133,
+          "wavelength_nm": 833.1331331331331,
+          "value": 0.0007099732756614685,
+          "prominence": 0.000615361008385662,
+          "half_prominence_width_nm": 96.4500977723512
+        },
+        {
+          "index": 192,
+          "wavelength_nm": 892.1921921921922,
+          "value": 0.0004828200035262853,
+          "prominence": 3.1092786230146885e-05,
+          "half_prominence_width_nm": 6.433193295453823
+        },
+        {
+          "index": 312,
+          "wavelength_nm": 1012.3123123123123,
+          "value": 0.00029115681536495686,
+          "prominence": 3.921959432773292e-05,
+          "half_prominence_width_nm": 112.67684852191952
+        }
+      ],
+      "T_dips": [
+        {
+          "index": 119,
+          "wavelength_nm": 819.1191191191191,
+          "value": 9.461226727580652e-05,
+          "prominence": 0.000615361008385662,
+          "half_prominence_width_nm": 4.493803497785427
+        },
+        {
+          "index": 188,
+          "wavelength_nm": 888.1881881881882,
+          "value": 0.0004517272172961384,
+          "prominence": 3.1092786230146885e-05,
+          "half_prominence_width_nm": 4.382440650411107
+        },
+        {
+          "index": 300,
+          "wavelength_nm": 1000.3003003003003,
+          "value": 0.00025193722103722394,
+          "prominence": 3.921959432773292e-05,
+          "half_prominence_width_nm": 3.281700569766224
+        }
+      ],
+      "R_min": 0.13232505321502686,
+      "R_max": 0.9846957921981812,
+      "T_min": 9.332982153864577e-05,
+      "T_max": 0.0010689342161640525
+    },
+    {
+      "name": "上金膜 / 有限基板诊断",
+      "label": "上金膜 / 有限 SiO2；1 ps 未自动关断",
+      "status": 1,
+      "R_features": [
+        {
+          "index": 106,
+          "wavelength_nm": 806.1061061061062,
+          "value": 0.3347184686078207,
+          "prominence": 0.2195667073162229,
+          "half_prominence_width_nm": 55.430230390803956
+        },
+        {
+          "index": 429,
+          "wavelength_nm": 1129.4294294294295,
+          "value": 0.4993408420531083,
+          "prominence": 0.44805044417884593,
+          "half_prominence_width_nm": 13.97479232652087
+        }
+      ],
+      "T_peaks": [
+        {
+          "index": 13,
+          "wavelength_nm": 713.013013013013,
+          "value": 0.0011781854648821508,
+          "prominence": 0.0003472918171359091,
+          "half_prominence_width_nm": 17.46707539417
+        },
+        {
+          "index": 126,
+          "wavelength_nm": 826.1261261261261,
+          "value": 0.001130765683536681,
+          "prominence": 0.0009285978021249502,
+          "half_prominence_width_nm": 103.94784338001074
+        },
+        {
+          "index": 458,
+          "wavelength_nm": 1158.4584584584586,
+          "value": 0.00027712561794403413,
+          "prominence": 6.194393295034132e-05,
+          "half_prominence_width_nm": 203.82367968162418
+        }
+      ],
+      "T_dips": [
+        {
+          "index": 64,
+          "wavelength_nm": 764.064064064064,
+          "value": 6.224711553516529e-05,
+          "prominence": 0.0010685185680015157,
+          "half_prominence_width_nm": 61.65023529047243
+        },
+        {
+          "index": 429,
+          "wavelength_nm": 1129.4294294294295,
+          "value": 0.00021518168499369282,
+          "prominence": 6.194393295034132e-05,
+          "half_prominence_width_nm": 11.815159092605796
+        }
+      ],
+      "R_min": 0.013305364018694256,
+      "R_max": 0.963633027339499,
+      "T_min": 6.224711553516529e-05,
+      "T_max": 0.0011781854648821508
+    },
+    {
+      "name": "目标：厚 SiO2 / Au / 四聚体",
+      "label": "厚 SiO2 / Au / 四聚体；T 在玻璃",
+      "status": 2,
+      "R_features": [
+        {
+          "index": 105,
+          "wavelength_nm": 805.1051051051052,
+          "value": 0.33455042750598035,
+          "prominence": 0.21977332949082345,
+          "half_prominence_width_nm": 55.4314085415574
+        },
+        {
+          "index": 429,
+          "wavelength_nm": 1129.4294294294295,
+          "value": 0.5083024819064517,
+          "prominence": 0.44037260946517076,
+          "half_prominence_width_nm": 14.313857273359028
+        }
+      ],
+      "T_peaks": [
+        {
+          "index": 12,
+          "wavelength_nm": 712.0120120120121,
+          "value": 0.0009234890071425566,
+          "prominence": 0.00020438255825629375,
+          "half_prominence_width_nm": 15.118861294529255
+        },
+        {
+          "index": 129,
+          "wavelength_nm": 829.1291291291292,
+          "value": 0.0010605328150725382,
+          "prominence": 0.0008899232389254826,
+          "half_prominence_width_nm": 158.0125928819846
+        },
+        {
+          "index": 451,
+          "wavelength_nm": 1151.4514514514515,
+          "value": 0.0003966122173473795,
+          "prominence": 8.345598441140273e-05,
+          "half_prominence_width_nm": 101.64602360077738
+        }
+      ],
+      "T_dips": [
+        {
+          "index": 63,
+          "wavelength_nm": 763.063063063063,
+          "value": 7.115139439117737e-05,
+          "prominence": 0.0008523376127513793,
+          "half_prominence_width_nm": 62.12353574584201
+        },
+        {
+          "index": 429,
+          "wavelength_nm": 1129.4294294294295,
+          "value": 0.00031315623293597675,
+          "prominence": 8.345598441140273e-05,
+          "half_prominence_width_nm": 12.07864265044934
+        }
+      ],
+      "R_min": 0.013268165094636549,
+      "R_max": 0.9643111797922809,
+      "T_min": 7.115139439117737e-05,
+      "T_max": 0.0010605328150725382
+    }
+  ],
+  "actual_settings": {
+    "wavelength_start_nm": 700,
+    "wavelength_stop_nm": 1700,
+    "spectrum_points": 1000,
+    "mesh_accuracy": 4,
+    "mesh_nm": 8,
+    "simulation_time_ps": 4.0,
+    "auto_shutoff_min": 1e-05,
+    "air_padding_nm": 1200,
+    "substrate_depth_nm": 350,
+    "background_index": 1,
+    "silicon_material": "Si (Silicon) - Palik",
+    "substrate_material": "SiO2 (Glass) - Palik",
+    "processes": 1,
+    "threads": 8,
+    "hide_fdtd": true,
+    "save_projects": true,
+    "quality_tolerance": 0.03,
+    "require_auto_shutoff": false,
+    "resonator_material": "As2Se3 - Joseph 700nm film (2020)",
+    "resonator_nk_csv": "D:\\projects\\Deta_Generator2.0\\src\\deta_generator2\\assets\\materials\\as2se3_joseph_700nm.csv",
+    "material_max_extension_nm": 12,
+    "metal_material": "Au (Gold) - Palik",
+    "remove_metal": false,
+    "metal_thickness_nm": 100,
+    "metal_position": "above_substrate",
+    "substrate_termination": "pml",
+    "metal_mesh_nm": 8.0,
+    "bottom_padding_nm": 1200,
+    "polarization_deg": 0.0,
+    "material_fit_tolerance": 0,
+    "material_imaginary_weight": 2,
+    "research_grid": false,
+    "maximum_mesh_nm": null,
+    "mesh_policy": "metal_only",
+    "monitor_downsample_xy": 1,
+    "power_validation_wavelengths_nm": [],
+    "research_wavelengths_nm": []
+  },
+  "native_preflight": {
+    "solver_run_performed": false,
+    "native_layout_verified": true,
+    "fdtd_version": "8.31.3633",
+    "geometry_values": [
+      649.7604076511419,
+      161.1566330153756,
+      284.88377288849,
+      133.54673339593725,
+      116.4992120505661,
+      -33.64481402341028,
+      39.36335222367701
+    ],
+    "metal_position": "above_substrate",
+    "substrate_termination": "pml",
+    "transmission_medium": "SiO2",
+    "stack_interfaces_nm": {
+      "substrate_min": -2850,
+      "substrate_max": -100,
+      "metal_min": -100,
+      "metal_max": 0.0,
+      "stack_min": -450,
+      "domain_min": -1650,
+      "transmission_z": -1050.0
+    },
+    "native_objects_nm": {
+      "substrate": {
+        "z min": -2850.0000000000005,
+        "z max": -99.99999999999989
+      },
+      "metal_film": {
+        "z min": -100.0,
+        "z max": 0.0
+      },
+      "si_0": {
+        "z min": 0.0,
+        "z max": 284.88377288849006
+      },
+      "si_1": {
+        "z min": 0.0,
+        "z max": 284.88377288849006
+      },
+      "si_2": {
+        "z min": 0.0,
+        "z max": 284.88377288849006
+      },
+      "si_3": {
+        "z min": 0.0,
+        "z max": 284.88377288849006
+      },
+      "T": {
+        "z": -1050.0
+      },
+      "R": {
+        "z": 1184.88377288849
+      },
+      "source": {
+        "z": 884.8837728884902
+      }
+    },
+    "mesh_audit": {
+      "mesh_policy": "metal_only",
+      "maximum_mesh_nm": null,
+      "whole_domain_limit_enforced": false,
+      "actual_grid": {
+        "x": {
+          "points": 84,
+          "maximum_step_nm": 7.828438646399307,
+          "minimum_step_nm": 7.828438646398883
+        },
+        "y": {
+          "points": 84,
+          "maximum_step_nm": 7.828438646399307,
+          "minimum_step_nm": 7.828438646398883
+        },
+        "z": {
+          "points": 132,
+          "maximum_step_nm": 38.70967741935606,
+          "minimum_step_nm": 7.733333333332251
+        }
+      },
+      "all_returned_cells_below_10_nm": false,
+      "metal_region": {
+        "axis": "z",
+        "z_min_nm": -100,
+        "z_max_nm": 0.0,
+        "cells": 13,
+        "requested_step_nm": 8.0,
+        "maximum_step_nm": 7.7333333333333485,
+        "minimum_step_nm": 7.733333333333334,
+        "reference_mesh_without_metal": false,
+        "reference_xy_pinned": false
+      }
+    },
+    "recommended_ram_gib": 0.9900451215310857,
+    "available_ram_gib": 3.722393035888672,
+    "material_fit_errors": {
+      "As2Se3 - Joseph 700nm film (2020)": {
+        "max_n_error": 0.0068060458615883945,
+        "max_k_error": 0.0017094041668339333,
+        "max_imaginary_permittivity_error": 0.009892438894474886,
+        "accuracy_certified": false
+      },
+      "SiO2 (Glass) - Palik": {
+        "max_n_error": 0.008349388224864862,
+        "max_k_error": 0.0,
+        "max_imaginary_permittivity_error": 0.0,
+        "accuracy_certified": false
+      },
+      "Au (Gold) - Palik": {
+        "max_n_error": 0.6558529804086315,
+        "max_k_error": 0.9026045749913916,
+        "max_imaginary_permittivity_error": 14.173032698570964,
+        "accuracy_certified": false
+      }
+    },
+    "source_dataset_sha256": "591ca0f4d9f4fc0be9803f3a566f72eee1ee3ac871ad9d03472b93a732aed0e3"
+  },
+  "auto_shutoff_reached": true,
+  "solver_status": 2,
+  "numerical_precision_certified": false,
+  "dataset_quality_level": "pipeline_validation",
+  "actual_solver_wall_seconds": 184.25,
+  "time_limit_ps": 4.0,
+  "actual_propagation_time_ps": 0.3731539,
+  "Q_fit_candidates": [],
+  "Q_rejected": [
+    "透射峰 712.01 nm：孤立 Lorentz 线型/采样/时间分辨率筛选未通过（R²=0.9982）。",
+    "透射峰 829.13 nm：孤立 Lorentz 线型/采样/时间分辨率筛选未通过（R²=0.6073）。",
+    "透射峰 1151.45 nm：孤立 Lorentz 线型/采样/时间分辨率筛选未通过（R²=0.9868）。",
+    "透射谷 763.06 nm：孤立 Lorentz 线型/采样/时间分辨率筛选未通过（R²=0.8206）。",
+    "透射谷 1129.43 nm：孤立 Lorentz 线型/采样/时间分辨率筛选未通过（R²=0.9993）。"
+  ],
+  "max_absolute_delta_R_thick_vs_finite": 0.008961639853343362,
+  "mean_absolute_delta_R_thick_vs_finite": 0.0005802612338834697,
+  "max_absolute_delta_R_thick_vs_old": 0.508270217301319,
+  "note": "Finite local spectrum is not auto-shutoff converged; old server version differs. Differences are previews.",
+  "time_check": {
+    "strict_status": 1,
+    "strict_threshold": 1e-07,
+    "base_threshold": 1e-05,
+    "strict_time_limit_ps": 1.0,
+    "wall_seconds": 466.2970000000005,
+    "maximum_R_delta": 0.0090272808793333,
+    "maximum_T_delta": 2.309933100917911e-06,
+    "features": [
+      {
+        "base": {
+          "index": 105,
+          "wavelength_nm": 805.1051051051052,
+          "value": 0.33455042750598035,
+          "prominence": 0.21977332949082345,
+          "half_prominence_width_nm": 55.4314085415574
+        },
+        "strict": {
+          "index": 105,
+          "wavelength_nm": 805.1051051051052,
+          "value": 0.3347079293700381,
+          "prominence": 0.21959536128218293,
+          "half_prominence_width_nm": 55.42780090361416
+        },
+        "shift_nm": 0.0,
+        "depth_delta": 0.0001575018640577741,
+        "width_relative_delta": -6.508292028217788e-05
+      },
+      {
+        "base": {
+          "index": 429,
+          "wavelength_nm": 1129.4294294294295,
+          "value": 0.5083024819064517,
+          "prominence": 0.44037260946517076,
+          "half_prominence_width_nm": 14.313857273359028
+        },
+        "strict": {
+          "index": 429,
+          "wavelength_nm": 1129.4294294294295,
+          "value": 0.49927520102711836,
+          "prominence": 0.44798454977033003,
+          "half_prominence_width_nm": 13.974128554747137
+        },
+        "shift_nm": 0.0,
+        "depth_delta": -0.0090272808793333,
+        "width_relative_delta": -0.023734253606412237
+      }
+    ],
+    "propagation_time_ps": 0.9999972,
+    "Q_fit_candidates": [],
+    "Q_rejected": [
+      "未达到自动关断阈值，不从截断谱发布 Q 候选值。"
+    ]
+  },
+  "same_1ps_substrate_comparison": {
+    "maximum_R_delta": 0.0025133051174646703,
+    "mean_R_delta": 7.478939897288684e-05,
+    "maximum_T_delta": 0.000264976957423269,
+    "note": "Equal 1 ps duration, both time limited. T is inside SiO2 for thick case and in air for finite case."
+  },
+  "file_sha256": {
+    "data/finite_topmetal_diagnostic.npz": "c0ccadf7e719acae8a4a7fb47ecc7cffa70184054f832449e39108e320178d7f",
+    "data/historical_sample0.npz": "943885d5896161d1c4b0a6545ba61fc457769d14ef1daac2d25bc0c3ca59ef12",
+    "data/pml_topmetal_sample0.npz": "d49ddfffa498f53b105972c4c9af795838599070c5ab71952b06ff4f97a9891a",
+    "data/pml_topmetal_strict.npz": "fff42abf7fc05f7f1e4c8de48a1b8035945e9323ce7d2aa26a9e5b4d4e21f6c4",
+    "data/spectra.csv": "6fb34be02ad365976261819d2189213c1d66d64b581530465726e30105adc28c",
+    "data/time_check.csv": "eccd62aa31d77b1fbc01e081041663da5dc8eb85aa9327c6424e03f9ddd169e7"
+  }
+}
