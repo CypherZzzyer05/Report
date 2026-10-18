@@ -1,0 +1,153 @@
+{
+  "checked_on": "2026-10-18",
+  "sources": [
+    {
+      "id": "S01",
+      "reference": "Ansys，getfdtdindex。",
+      "scope_note": "返回指定波段 FDTD 所用材料拟合；支撑原生材料审核的含义。[官方文档](https://optics.ansys.com/hc/en-us/articles/360034409694-getfdtdindex-Script-command)",
+      "evidence_type": "official_solver_documentation",
+      "urls": [
+        "https://optics.ansys.com/hc/en-us/articles/360034409694-getfdtdindex-Script-command"
+      ]
+    },
+    {
+      "id": "S02",
+      "reference": "Ansys，材料拟合质量指南。",
+      "scope_note": "拟合与原始数据须核对，说明 tolerance、系数数目及 imaginary weight 的作用；不构成本项目参数认证。[官方文档](https://optics.ansys.com/hc/en-us/articles/360034915053-Tips-for-improving-the-quality-of-optical-material-fits)",
+      "evidence_type": "official_solver_documentation",
+      "urls": [
+        "https://optics.ansys.com/hc/en-us/articles/360034915053-Tips-for-improving-the-quality-of-optical-material-fits"
+      ]
+    },
+    {
+      "id": "S03",
+      "reference": "Joseph-700nm 原始 nk 数据。",
+      "scope_note": "作者提供的玻璃上 700 nm As₂Se₃ 膜；范围 245.8–1688 nm。用于当前材料尺度计算，而非最终加工膜测量。[原始数据库文件](https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/master/database/data/main/As2Se3/nk/Joseph-700nm.yml)",
+      "evidence_type": "author_supplied_material_data",
+      "urls": [
+        "https://raw.githubusercontent.com/polyanskiy/refractiveindex.info-database/master/database/data/main/As2Se3/nk/Joseph-700nm.yml"
+      ]
+    },
+    {
+      "id": "S04",
+      "reference": "Joseph et al., ACS Applied Materials & Interfaces 12, 46519–46529 (2020)。",
+      "scope_note": "Grating-Coupled Surface Plasmon-Polariton Sensing at a Flat Metal–Analyte Interface in a Hybrid-Configuration。为上述数据的出处，不是本四聚体结构。[DOI 10.1021/acsami.0c12525](https://doi.org/10.1021/acsami.0c12525)",
+      "evidence_type": "original_research",
+      "urls": [
+        "https://doi.org/10.1021/acsami.0c12525"
+      ]
+    },
+    {
+      "id": "S05",
+      "reference": "Frantz et al., Optics Express 28, 34744–34753 (2020)。",
+      "scope_note": "Thermal tuning of arsenic selenide glass thin films and devices。As₂Se₃ 热处理、折射率与厚度变化的实验依据。[DOI 10.1364/OE.409531](https://doi.org/10.1364/OE.409531)",
+      "evidence_type": "original_experiment",
+      "urls": [
+        "https://doi.org/10.1364/OE.409531"
+      ]
+    },
+    {
+      "id": "S06",
+      "reference": "Fan et al., Applied Optics 59, 1564–1568 (2020)。",
+      "scope_note": "Design and fabrication of As₂Se₃ chalcogenide waveguides with low optical losses。同材料沉积、ICP 图形转移与 1550 nm 波导实验；不能外推模式 Q。[DOI 10.1364/AO.386280](https://doi.org/10.1364/AO.386280)",
+      "evidence_type": "original_experiment",
+      "urls": [
+        "https://doi.org/10.1364/AO.386280"
+      ]
+    },
+    {
+      "id": "S07",
+      "reference": "Xu et al., Light: Science & Applications 7, 44 (2018)。",
+      "scope_note": "Boosting third-harmonic generation by a mirror-enhanced anapole resonator。Si 纳米盘/Au 镜实验先例；材料和几何不同。[DOI 10.1038/s41377-018-0051-8](https://doi.org/10.1038/s41377-018-0051-8)",
+      "evidence_type": "analogous_structure_experiment",
+      "urls": [
+        "https://doi.org/10.1038/s41377-018-0051-8"
+      ]
+    },
+    {
+      "id": "S08",
+      "reference": "Rifat et al., Materials 11, 1091 (2018)。",
+      "scope_note": "Hybrid Metasurface Based Tunable Near-Perfect Absorber and Plasmonic Sensor。金镜上介电纳米盘数值研究；不是加工实验。[DOI 10.3390/ma11071091](https://doi.org/10.3390/ma11071091)",
+      "evidence_type": "analogous_structure_numerical_study",
+      "urls": [
+        "https://doi.org/10.3390/ma11071091"
+      ]
+    },
+    {
+      "id": "S09",
+      "reference": "Ansys，共振腔 Q 计算。",
+      "scope_note": "线宽法与时间衰减法及其适用条件；并非本器件 Q 的测量结果。[官方文档](https://optics.ansys.com/hc/en-us/articles/360041611774-Quality-factor-calculations-for-a-resonant-cavity)",
+      "evidence_type": "official_solver_documentation",
+      "urls": [
+        "https://optics.ansys.com/hc/en-us/articles/360041611774-Quality-factor-calculations-for-a-resonant-cavity"
+      ]
+    },
+    {
+      "id": "S10",
+      "reference": "Ansys，FDTD 光栅投影。",
+      "scope_note": "不同传播级次及功率分解的依据；本报告仅推导开启阈值，未导出各级次功率。[官方文档](https://optics.ansys.com/hc/en-us/articles/360034394354-Grating-projections-in-FDTD-overview)",
+      "evidence_type": "official_solver_documentation",
+      "urls": [
+        "https://optics.ansys.com/hc/en-us/articles/360034394354-Grating-projections-in-FDTD-overview"
+      ]
+    },
+    {
+      "id": "S11",
+      "reference": "Popescu et al., Chalcogenide Letters 17, 117–122 (2020)。",
+      "scope_note": "Surface plasmon resonance in As₂Se₃ planar waveguides for the IR spectral region。Au 上热蒸发 As₂Se₃ 连续膜与 1064 nm SPR 实验。[出版社原文](https://chalcogen.ro/117_PopescuAA.pdf)，[DOI 10.15251/CL.2020.173.117](https://doi.org/10.15251/CL.2020.173.117)",
+      "evidence_type": "same_material_layer_stack_experiment",
+      "urls": [
+        "https://chalcogen.ro/117_PopescuAA.pdf",
+        "https://doi.org/10.15251/CL.2020.173.117"
+      ]
+    },
+    {
+      "id": "S12",
+      "reference": "Gu et al., Opto-Electronic Science 3, 240017 (2024)。",
+      "scope_note": "Surface-patterned chalcogenide glasses with high-aspect-ratio microstructures for long-wave infrared metalenses。同材料 EBL/ICP 与掩膜兼容性依据；LWIR 微米结构。[出版社原文](https://www.oejournal.org/oej-data/oes/2024/10/PDF/oes-2024-0017.pdf)，[DOI 10.29026/oes.2024.240017](https://doi.org/10.29026/oes.2024.240017)",
+      "evidence_type": "same_material_etching_experiment",
+      "urls": [
+        "https://www.oejournal.org/oej-data/oes/2024/10/PDF/oes-2024-0017.pdf",
+        "https://doi.org/10.29026/oes.2024.240017"
+      ]
+    },
+    {
+      "id": "S13",
+      "reference": "Tzadka Shalit et al., Optics Express 30, 26229–26237 (2022)。",
+      "scope_note": "Direct nanoimprint of chalcogenide glasses with optical functionalities via solvent-based surface softening。20 nm 尺度 As₂Se₃ 压印线条；不是本高柱/Au 工艺。[作者原文](https://schvartzmanlab.com/wp-content/uploads/2022/08/2022-tzadka-opt.-exp.pdf)，[DOI 10.1364/OE.462448](https://doi.org/10.1364/OE.462448)",
+      "evidence_type": "same_material_imprinting_experiment",
+      "urls": [
+        "https://schvartzmanlab.com/wp-content/uploads/2022/08/2022-tzadka-opt.-exp.pdf",
+        "https://doi.org/10.1364/OE.462448"
+      ]
+    },
+    {
+      "id": "S14",
+      "reference": "McPeak et al., ACS Photonics 2, 326–333 (2015)。",
+      "scope_note": "Plasmonic Films Can Easily Be Better: Rules and Recipes。金属膜沉积品质与光学损耗的技术依据。[作者公开稿](https://arxiv.org/abs/1603.02132)，[DOI 10.1021/ph5004237](https://doi.org/10.1021/ph5004237)",
+      "evidence_type": "author_material_deposition_technical_paper",
+      "urls": [
+        "https://arxiv.org/abs/1603.02132",
+        "https://doi.org/10.1021/ph5004237"
+      ]
+    },
+    {
+      "id": "S15",
+      "reference": "Frantz et al., Optical Materials Express 8, 3659–3665 (2018)。",
+      "scope_note": "Arsenic selenide thin film degradation and its mitigation。同材料稳定性与薄保护层实验，不是器件寿命认证。[DOI 10.1364/OME.8.003659](https://doi.org/10.1364/OME.8.003659)",
+      "evidence_type": "same_material_stability_experiment",
+      "urls": [
+        "https://doi.org/10.1364/OME.8.003659"
+      ]
+    },
+    {
+      "id": "S16",
+      "reference": "Thermo Fisher，Arsenic selenide SDS，2025-10-06。",
+      "scope_note": "As₂Se₃ 的危害与专业处理依据；实际使用以所购批次和平台现行文件为准。[供应商 SDS](https://assets.thermofisher.com/DirectWebViewer/private/results.aspx?LANGUAGE=d__EN&PLANT=d__ALF&SKU=ALFAA43748&SUBFORMAT=d__CGV4&page=NewSearch)",
+      "evidence_type": "manufacturer_SDS",
+      "urls": [
+        "https://assets.thermofisher.com/DirectWebViewer/private/results.aspx?LANGUAGE=d__EN&PLANT=d__ALF&SKU=ALFAA43748&SUBFORMAT=d__CGV4&page=NewSearch"
+      ]
+    }
+  ]
+}

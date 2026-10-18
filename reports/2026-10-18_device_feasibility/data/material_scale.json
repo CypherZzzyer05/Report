@@ -1,0 +1,43 @@
+{
+  "calculation_type": "material scale illustration, not device absorptance or modal Q",
+  "source_csv_sha256": "9e6ee6d3b584f33226d7201e2b2e12490726cb3b8256726754e5aca9cae64ce9",
+  "resonator_height_nm": 284.88377288849,
+  "source_film_thickness_nm": 700,
+  "measured_stop_nm": 1688,
+  "extrapolated_1688_to_1700": true,
+  "checkpoints": [
+    {
+      "wavelength_nm": 700.0,
+      "n": 2.938949375,
+      "k": 0.09772812500000001,
+      "uniform_medium_single_pass_intensity_fraction": 0.6066499874814419
+    },
+    {
+      "wavelength_nm": 805.1051051051052,
+      "n": 2.8139823573573572,
+      "k": 0.03293237237237237,
+      "uniform_medium_single_pass_intensity_fraction": 0.8637809671241
+    },
+    {
+      "wavelength_nm": 1129.4294294294295,
+      "n": 2.689996553612436,
+      "k": 0.024688044515103334,
+      "uniform_medium_single_pass_intensity_fraction": 0.9247297449838785
+    },
+    {
+      "wavelength_nm": 1550.0,
+      "n": 2.640064117647059,
+      "k": 0.051314705882352936,
+      "uniform_medium_single_pass_intensity_fraction": 0.8882350011525927
+    },
+    {
+      "wavelength_nm": 1688.0,
+      "n": 2.63074,
+      "k": 0.06275,
+      "uniform_medium_single_pass_intensity_fraction": 0.8753934289009377
+    }
+  ],
+  "no_new_fdtd_simulation": true,
+  "substrate_index_from_archived_fit": 1.45051927,
+  "glass_first_diffraction_cutoff_nm": 942.4899921810368
+}

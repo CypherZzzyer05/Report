@@ -3,3 +3,4 @@ __pycache__/
 *.fsp
 *.fsp.bak
 .idea/
+tmp/

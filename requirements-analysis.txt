@@ -2,3 +2,5 @@ numpy>=1.24
 matplotlib>=3.7
 scipy>=1.10
 Markdown>=3.4
+reportlab>=4
+pypdf>=5

@@ -1,0 +1,23 @@
+{
+  "files_sha256": {
+    "reports/2026-10-18_device_feasibility/data/as2se3_checkpoints.csv": "fde2cbc5ac8aa2190c79ffd939969cb6b7cfa4256f2da6383882d6c8315d38bb",
+    "reports/2026-10-18_device_feasibility/data/au_checkpoints.csv": "215e057aa3ac934948f921998b0f9da736d9cda742cf9b9940bd5351b312526a",
+    "reports/2026-10-18_device_feasibility/data/candidate_geometry_audit.csv": "e1c931d93224e5a3a44865277558b8b00c8982537d1e18839501baa6dcba4df7",
+    "reports/2026-10-18_device_feasibility/data/geometry_audit.json": "6d461a97cb2641b4ced6c0120e4f3118359ba4785a0eb9b6dabbc4956831448a",
+    "reports/2026-10-18_device_feasibility/data/material_scale.json": "3f0629e589845526d4813839d53645af833c4e88e4e36a4fe266f6cb04e603e7",
+    "reports/2026-10-18_device_feasibility/data/native_material_audit.json": "3885b3809fa3cb2176c9cd347f58bcbad8793ed5faae33f6a371af325eb117a9",
+    "reports/2026-10-18_device_feasibility/data/sources.json": "1f478fda0f629433885e92f64f91dd1428e3c7dddc3bbce7449bed54b63ce90c",
+    "reports/2026-10-18_device_feasibility/figures/as2se3_material_scale.png": "ec811bb2c672a3207c247a344b73caa443e49b98cff534fbde738596abe673a9",
+    "reports/2026-10-18_device_feasibility/figures/gap_distribution.png": "f4d13666a8afa2aa68a1d3e3fc28b8c8a972e11b83b27225cb33bd0fc463c87e",
+    "reports/2026-10-18_device_feasibility/figures/geometry_clearance.png": "bdbe7b2a5835b44c967e48230b5647485b848c364b7b497d60ff46d8d845b36e",
+    "reports/2026-10-18_device_feasibility/figures/gold_fit_audit.png": "1336a9bd6a4cda9e08a2fea8e2f65e3eca5b357d6a6fab71d029647cce45ea01",
+    "reports/2026-10-18_device_feasibility/figures/sidewall_sensitivity.png": "b06cd060326915a5c99e1583b47d7ad6553d41016a3dcc2afbdfc34fe3f6e3e3",
+    "reports/2026-10-18_device_feasibility/index.html": "a4bd3359f93ef0fbd1a10f7ad18e1c5515f445f093d0c3623bc05051da83812b",
+    "reports/2026-10-18_device_feasibility/README.md": "705b9104ea3205351b84a8d0fecdcc729f936120bc912b00cd5991d5e2c76d00",
+    "output/pdf/device_feasibility_2026-10-18.pdf": "8ec6a5df09e963c44f228f36e0137de79c60f4bcefcb94b5f59f042f6d4a3099"
+  },
+  "scope": "literature research, geometry-only calculations and read-only native material check",
+  "no_new_time_domain_solver_run": true,
+  "generator_modified": false,
+  "source_fsp_modified": false
+}

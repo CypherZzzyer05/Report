@@ -9,3 +9,4 @@
 *.csv -text whitespace=cr-at-eol
 *.npz binary
 *.png binary
+*.pdf binary

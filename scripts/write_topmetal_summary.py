@@ -42,6 +42,10 @@ else:
     q_text = '**本次没有通过筛选的可靠 Q 候选值，因此不发布一个看似精确的 Q 数字。** 当前谱上存在宽背景、边界附近峰和不对称特征；部分窄特征的时间分辨率也不足。具体拒绝原因保留在 `analysis.json`。'
 report = f'''# 厚 SiO2 / Au100 / As2Se3 四聚体：本机测试报告
 
+<!-- material-fit-erratum -->
+
+> **2026-10-18 材料审核更正：**只读复核保存的本机 FSP 发现，Au 拟合几乎丢失 Palik 输入数据的吸收损耗。下文保留原始数值记录，但这些谱线不能认证真实 Au 器件的谷深、吸收、Q、场增强或金层位置优劣。请先阅读[可行性与加工调研中的更正](../2026-10-18_device_feasibility/README.md)。服务器当前任务仍需逐项核查材料。
+
 日期：2026-10-18。所有层序均按 **从下到上** 书写。
 
 ## 结论
@@ -190,7 +194,10 @@ code{font-family:Consolas,monospace}a{color:#1768ac}strong{color:#113b5d}
 
 | 日期 | 报告 | 内容 |
 | --- | --- | --- |
+| 2026-10-18 | [器件可行性与可加工性调研](reports/2026-10-18_device_feasibility/README.md) · [PDF](output/pdf/device_feasibility_2026-10-18.pdf) | 16 项文献/官方来源；Au 损耗拟合重大更正；1000 候选几何审查；工艺与验证路线 |
 | 2026-10-18 | [厚 SiO2 / Au100 / As2Se3 四聚体](reports/2026-10-18_topmetal_thick_substrate/README.md) | 结构纠正、R/T 光谱、衰减阈值对照、Q 值适用范围、服务器更新方法 |
+
+**材料审核更正：**已保存的本机 Au 拟合几乎丢失输入损耗；旧谱保留为数值记录，不作为真实器件性能认证。详见上述新调研。
 
 下载仓库后，可双击报告目录中的 `index.html` 在浏览器离线阅读。
 ''', encoding='utf-8', newline='\n')
