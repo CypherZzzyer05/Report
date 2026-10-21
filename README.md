@@ -4,6 +4,7 @@
 
 | 日期 | 报告 | 内容 |
 | --- | --- | --- |
+| 2026-10-21 | [Au 损耗修正候选与平面金膜网格核对](reports/2026-10-21_gold_film_validation/README.md) | 9组原生薄膜对照；恢复损耗的候选尚未通过全部材料门槛；CV1改善平膜8/4 nm微弱透射一致性，完整四聚体仍待验证 |
 | 2026-10-21 | [逆向 Metaformer：1000样本训练与回仿真](reports/2026-10-21_inverse_roundtrip_207/README.md) · [离线 HTML](reports/2026-10-21_inverse_roundtrip_207/index.html) | 800/100/100训练与测试；样本207双谷保留、第二谷偏移4 nm；确认服务器数据也存在Au损耗拟合缺失 |
 | 2026-10-18 | [器件可行性与可加工性调研](reports/2026-10-18_device_feasibility/README.md) · [PDF](output/pdf/device_feasibility_2026-10-18.pdf) | 16 项文献/官方来源；Au 损耗拟合重大更正；1000 候选几何审查；工艺与验证路线 |
 | 2026-10-18 | [厚 SiO2 / Au100 / As2Se3 四聚体](reports/2026-10-18_topmetal_thick_substrate/README.md) | 结构纠正、R/T 光谱、衰减阈值对照、Q 值适用范围、服务器更新方法 |
