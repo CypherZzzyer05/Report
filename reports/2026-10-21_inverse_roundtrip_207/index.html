@@ -5,6 +5,11 @@
 <div class="warning"><strong>材料更正：服务器数据也沿用了几乎丢失 Au 欧姆损耗的拟合。</strong><br>存档拟合 Im(ε) 约 1.69e-7–2.60e-6。本次验证的是数值模型闭环；真实金器件性能需要修正材料后重新验证。<a href="../2026-10-18_device_feasibility/index.html">此前材料审核</a></div>
 <h2>结论</h2><p>网络直接输出的结构保留两处明显深谷，但第二谷偏移约 4 nm，未通过此前 2 nm 参考门槛。不能将本例称为精确重建，也不能由这一例推出全部测试集的光谱精度。</p>
 <p>原始结构本机重算与服务器目标的最大反射率差为 9.67e-7，排除了本例中明显的版本复现偏差。两组都达到自动关断状态 2；原始结构用时 573.437 秒，预测结构用时 733.922 秒。</p>
+<h2>1000 样本训练与测试</h2><p>全部 1000 条原始样本核对通过，按 800/100/100 划分。无 ResNet 的逆向 Metaformer 共 3,998,087 参数，训练 55 轮，以验证误差最低的第 35 轮权重评估。</p>
+<table><thead><tr><th>参数</th><th>100 条测试样本的 MAE</th></tr></thead><tbody><tr><td>P / L / H</td><td>6.05 / 2.50 / 5.16 nm</td></tr><tr><td>dX / dY</td><td>6.76 / 7.65 nm</td></tr><tr><td>奇数 / 偶数象限角</td><td>21.70° / 20.73°</td></tr></tbody></table>
+<p>测试归一化 MSE 为 0.033422，比常数基线降低 58.8%。与旧 100 样本模型比较，同一批 88 个新测试结构上的 MSE 降低 34.1%。尺寸预测改善，但角度部分仍未有效超过周期常数基线。训练标准化仅使用训练集；上述成绩受已知 Au 损耗拟合问题限制。</p>
+<img src="training_overview.png" alt="1000 样本训练、验证与留出测试概览；已知 Au 损耗拟合严重缺失">
+<p><a href="https://github.com/CypherZzzyer05/Optics_design/blob/6686084/Metaformer_As2Se3/results/inverse_au100_1000/report.md">完整训练记录和复现说明</a> · <a href="https://github.com/CypherZzzyer05/Optics_design/blob/6686084/Metaformer_As2Se3/models/inverse_au100_1000.pt">模型权重</a></p>
 <h2>逐谷比较</h2><table><thead><tr><th>谷</th><th>目标 λ（nm）</th><th>预测结构 λ（nm）</th><th>目标 R</th><th>预测 R</th><th>位移</th><th>宽度变化</th></tr></thead><tbody><tr><td>1</td><td>772.072</td><td>771.071</td><td>1.202%</td><td>0.365%</td><td>1.001 nm</td><td>5.13%</td></tr><tr><td>2</td><td>881.181</td><td>877.177</td><td>1.990%</td><td>1.359%</td><td>4.004 nm</td><td>3.81%</td></tr></tbody></table>
 <p>全波段 R 的 RMSE 为 0.04041。宽度指半突出度宽度，不据此宣称模态 Q 或 BIC。层序与训练集一致，尚未验证 2.0 的中间金层结构。</p>
 <img src="spectral_comparison.png" alt="目标、原始结构本机复现和网络预测结构的实际 FDTD R/T/A">
