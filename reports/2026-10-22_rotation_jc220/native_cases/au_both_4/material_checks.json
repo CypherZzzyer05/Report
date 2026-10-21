@@ -1,0 +1,35 @@
+{
+  "As2Se3 - Joseph 700nm film (2020)": {
+    "max_n_error": 0.0068060458615883945,
+    "max_k_error": 0.0017094041668339333,
+    "max_imaginary_permittivity_error": 0.009892438894474886,
+    "accuracy_certified": false
+  },
+  "SiO2 (Glass) - Palik": {
+    "max_n_error": 0.008349388224864862,
+    "max_k_error": 0.0,
+    "max_imaginary_permittivity_error": 0.0,
+    "accuracy_certified": false
+  },
+  "Au (Gold) - JC passive NIR v1": {
+    "max_n_error": 0.019684646506049952,
+    "max_k_error": 0.04985406759934996,
+    "max_imaginary_permittivity_error": 0.4239995113674482,
+    "accuracy_certified": false,
+    "max_relative_real_epsilon_error": 0.011837818309612584,
+    "max_relative_imag_epsilon_error": 0.038654369680594956,
+    "raw_imag_epsilon_range": [
+      1.0637685714545735,
+      16.55158010311333
+    ],
+    "fitted_imag_epsilon_range": [
+      1.026776669899391,
+      16.96690963698893
+    ],
+    "passive_in_band": true,
+    "source_material": "Au (Gold) - Johnson and Christy",
+    "validation_errors": [],
+    "material_fit_passed": true,
+    "gold_model_sha256": "3d99086d70e1ecfcd0475f616029318a6549961856ca3c571c74376d298171a5"
+  }
+}

@@ -1,0 +1,77 @@
+Ansys Lumerical 2024 R1 FDTD Solver Version 8.31.3633 (Windows 64bit)
+ expires (month/day/year): 12/31/2035
+using config file: Ansys Licensing set with ANSYSLMD_LICENSE_FILE
+license host: 1055@localhost
+current time: 周四 10月 22 00:38:20 2026
+Running on host: az
+host available memory (GB): 3.740049
+All processes are communicating and ready to proceed to simulation...
+Running fsp file: D:\Program Files\Lumerical\v241\bin\fdtd-engine.exe -t 8 -remote -shared-solve-license QU5TWVNfTElDRU5TSU5HX0NPTlRFWFRfREFUQT08QU5TWVNfTElDRU5TSU5HX0NPTlRFWFRfREFUQT48SUQ+MGJlOGZhY2MtZGYxYy00ZjM4LTkzNjgtMjc1ZTA1NTM3ZmM4PC9JRD48VFlQRT5IUENfUEFSQU1FVFJJQzwvVFlQRT48TkFNRT5IUEMgUGFyYW1ldHJpYzwvTkFNRT48SEFORExFUj42NDg1MUBhejwvSEFORExFUj48L0FOU1lTX0xJQ0VOU0lOR19DT05URVhUX0RBVEE+Cg== D:/projects/Deta_generator2_material/research/rotation_jc220/au_both_8/native.fsp
+number of processors is 1
+processors are distributed as: 1x1x1
+Running 3D Simulation
+Starting meshing
+Simulation size in gridpoints: 85 x 85 x 217
+Refined 0 mesh cells (0%)
+Completed meshing!
+Meshing complete in 0.734375 seconds of CPU time
+2517512 2517512
+Starting meshing
+Simulation size in gridpoints: 85 x 85 x 217
+Refined 0 mesh cells (0%)
+Completed meshing!
+Meshing complete in 0.78125 seconds of CPU time
+2511560 2511560
+Starting meshing
+Simulation size in gridpoints: 85 x 85 x 217
+Refined 0 mesh cells (0%)
+Completed meshing!
+Meshing complete in 0.765625 seconds of CPU time
+1096400 1096400
+finished material properties
+Meshing Time: 0.64568 seconds, Init Electrical Material Time: 0.262899 seconds, Init Magnetic Material Time: 0.0055177
+Using selected optimization level: 2
+Selecting 3d kernel for splitFieldDirection=0 and optLevel=2
+-----------------------------------------
+Beginning initialization of 3D Simulation
+Starting to add sources to simulation
+Adding 3D Gaussian source propagating in Z
+Starting to add boundary conditions to simulation
+Adding 3D Periodic BC
+Adding 3D Periodic BC
+Adding 3D Periodic BC
+Adding 3D Periodic BC
+Adding 3D PML BC
+Adding 3D PML BC
+Starting to add monitors to Simulation
+Adding analysis monitor
+Adding 3D DFT monitor
+Adding 3D DFT monitor
+Adding 3D DFT monitor
+Adding 3D DFT monitor
+Finished initialization of 3D Simulation
+-----------------------------------------
+All processes are communicating and ready to proceed to simulation...
+Starting 269101 total iterations
+0.0178372% complete. Elapsed simulation time: 7.13487e-16 secs. Max time remaining: 38 mins, 22 secs. Auto Shutoff: 1
+1.0405% complete. Elapsed simulation time: 4.16201e-14 secs. Max time remaining: 36 mins, 18 secs. Auto Shutoff: 0.0452615
+2.13452% complete. Elapsed simulation time: 8.53807e-14 secs. Max time remaining: 34 mins, 26 secs. Auto Shutoff: 0.00203677
+3.18096% complete. Elapsed simulation time: 1.27239e-13 secs. Max time remaining: 33 mins, 43 secs. Auto Shutoff: 0.00042659
+4.22741% complete. Elapsed simulation time: 1.69097e-13 secs. Max time remaining: 33 mins, 11 secs. Auto Shutoff: 0.000131454
+5.27386% complete. Elapsed simulation time: 2.10954e-13 secs. Max time remaining: 32 mins, 42 secs. Auto Shutoff: 4.86539e-05
+100% complete. Max time remaining: 0 mins, 0 secs. Auto Shutoff: 9.70468e-06
+Early termination of simulation, the autoshutoff criteria are satisfied.
+Completed 16418 iterations, or 2.440424e-13s of Simulation Time
+Process 0 starting to collect data
+    collecting monitor data
+    collecting source data
+Finished collecting data
+Simulation completed successfully at: 周四 10月 22 00:40:28 2026
+Overall wall time measurements in seconds: 129.198
+    time to mesh and initialize: 1.15849
+    time to run FDTD simulation: 126.025
+    time to checkpoint simulation: 0
+    time to finalize data and save to files: 1.40433
+    miscellaneous time: 0.610355
+    FDTD solver speed on process 0: 204.249 Mnodes/s
+    total FDTD solver speed on 1 processes: 204.249 Mnodes/s

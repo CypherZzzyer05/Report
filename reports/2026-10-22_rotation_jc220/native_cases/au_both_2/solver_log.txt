@@ -1,0 +1,78 @@
+Ansys Lumerical 2024 R1 FDTD Solver Version 8.31.3633 (Windows 64bit)
+ expires (month/day/year): 12/31/2035
+using config file: Ansys Licensing set with ANSYSLMD_LICENSE_FILE
+license host: 1055@localhost
+current time: 周四 10月 22 00:58:22 2026
+Running on host: az
+host available memory (GB): 3.699294
+All processes are communicating and ready to proceed to simulation...
+Running fsp file: D:\Program Files\Lumerical\v241\bin\fdtd-engine.exe -t 8 -remote -shared-solve-license QU5TWVNfTElDRU5TSU5HX0NPTlRFWFRfREFUQT08QU5TWVNfTElDRU5TSU5HX0NPTlRFWFRfREFUQT48SUQ+YTFhMmJiMTgtZDFkZi00NzkzLWE3YWItZmY4ZDc3NWNkNTAyPC9JRD48VFlQRT5IUENfUEFSQU1FVFJJQzwvVFlQRT48TkFNRT5IUEMgUGFyYW1ldHJpYzwvTkFNRT48SEFORExFUj41Mjk2MUBhejwvSEFORExFUj48L0FOU1lTX0xJQ0VOU0lOR19DT05URVhUX0RBVEE+Cg== D:/projects/Deta_generator2_material/research/rotation_jc220/au_both_2/native.fsp
+number of processors is 1
+processors are distributed as: 1x1x1
+Running 3D Simulation
+Starting meshing
+Simulation size in gridpoints: 85 x 85 x 261
+Refined 0 mesh cells (0%)
+Completed meshing!
+Meshing complete in 0.90625 seconds of CPU time
+2935608 2935608
+Starting meshing
+Simulation size in gridpoints: 85 x 85 x 261
+Refined 0 mesh cells (0%)
+Completed meshing!
+Meshing complete in 0.953125 seconds of CPU time
+2928600 2928600
+Starting meshing
+Simulation size in gridpoints: 85 x 85 x 261
+Refined 0 mesh cells (0%)
+Completed meshing!
+Meshing complete in 0.96875 seconds of CPU time
+1011760 1011760
+finished material properties
+Meshing Time: 0.738828 seconds, Init Electrical Material Time: 0.314462 seconds, Init Magnetic Material Time: 0.0071211
+Using selected optimization level: 2
+Selecting 3d kernel for splitFieldDirection=0 and optLevel=2
+-----------------------------------------
+Beginning initialization of 3D Simulation
+Starting to add sources to simulation
+Adding 3D Gaussian source propagating in Z
+Starting to add boundary conditions to simulation
+Adding 3D Periodic BC
+Adding 3D Periodic BC
+Adding 3D Periodic BC
+Adding 3D Periodic BC
+Adding 3D PML BC
+Adding 3D PML BC
+Starting to add monitors to Simulation
+Adding analysis monitor
+Adding 3D DFT monitor
+Adding 3D DFT monitor
+Adding 3D DFT monitor
+Adding 3D DFT monitor
+Finished initialization of 3D Simulation
+-----------------------------------------
+All processes are communicating and ready to proceed to simulation...
+Starting 643959 total iterations
+0.00745389% complete. Elapsed simulation time: 2.98156e-16 secs. Max time remaining: 1 hr, 59 mins, 8 secs. Auto Shutoff: 1
+1.01124% complete. Elapsed simulation time: 4.04498e-14 secs. Max time remaining: 1 hr, 52 mins, 53 secs. Auto Shutoff: 0.0516094
+2.02497% complete. Elapsed simulation time: 8.09989e-14 secs. Max time remaining: 1 hr, 52 mins, 56 secs. Auto Shutoff: 0.00172576
+3.0387% complete. Elapsed simulation time: 1.21548e-13 secs. Max time remaining: 1 hr, 51 mins, 49 secs. Auto Shutoff: 0.000506818
+4.05243% complete. Elapsed simulation time: 1.62097e-13 secs. Max time remaining: 1 hr, 51 mins, 38 secs. Auto Shutoff: 0.000155099
+5.06616% complete. Elapsed simulation time: 2.02646e-13 secs. Max time remaining: 1 hr, 51 mins, 31 secs. Auto Shutoff: 5.3955e-05
+6.07989% complete. Elapsed simulation time: 2.43196e-13 secs. Max time remaining: 1 hr, 50 mins, 53 secs. Auto Shutoff: 1.58263e-05
+100% complete. Max time remaining: 0 mins, 0 secs. Auto Shutoff: 9.66523e-06
+Early termination of simulation, the autoshutoff criteria are satisfied.
+Completed 40301 iterations, or 2.503327e-13s of Simulation Time
+Process 0 starting to collect data
+    collecting monitor data
+    collecting source data
+Finished collecting data
+Simulation completed successfully at: 周四 10月 22 01:05:48 2026
+Overall wall time measurements in seconds: 446.718
+    time to mesh and initialize: 1.2429
+    time to run FDTD simulation: 443.585
+    time to checkpoint simulation: 0
+    time to finalize data and save to files: 1.2563
+    miscellaneous time: 0.63377
+    FDTD solver speed on process 0: 171.324 Mnodes/s
+    total FDTD solver speed on 1 processes: 171.324 Mnodes/s
