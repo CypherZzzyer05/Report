@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>逆向 Metaformer：样本 207 回仿真</title><style>body{max-width:1080px;margin:32px auto;padding:0 20px;font:16px/1.8 'Microsoft YaHei',sans-serif;color:#233044}h1{font-size:28px;line-height:1.4}h2{font-size:22px;margin-top:1.6em}img{width:100%;height:auto}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border:1px solid #d6dfe8;padding:9px;text-align:left}th{background:#eaf1f7}.warning{background:#fff1e9;border-left:4px solid #b45d2a;padding:16px}a{color:#1768ac}@media(max-width:650px){table{display:block;overflow-x:auto}h1{font-size:23px}}</style></head><body>
+<h1>逆向 Metaformer：样本 207 的 FDTD 回仿真</h1>
+<p>2026-10-21 · 生成器 1.0 · Au100 / 有限 SiO2 / As2Se3 四聚体</p>
+<div class="warning"><strong>材料更正：服务器数据也沿用了几乎丢失 Au 欧姆损耗的拟合。</strong><br>存档拟合 Im(ε) 约 1.69e-7–2.60e-6。本次验证的是数值模型闭环；真实金器件性能需要修正材料后重新验证。<a href="../2026-10-18_device_feasibility/index.html">此前材料审核</a></div>
+<h2>结论</h2><p>网络直接输出的结构保留两处明显深谷，但第二谷偏移约 4 nm，未通过此前 2 nm 参考门槛。不能将本例称为精确重建，也不能由这一例推出全部测试集的光谱精度。</p>
+<p>原始结构本机重算与服务器目标的最大反射率差为 9.67e-7，排除了本例中明显的版本复现偏差。两组都达到自动关断状态 2；原始结构用时 573.437 秒，预测结构用时 733.922 秒。</p>
+<h2>逐谷比较</h2><table><thead><tr><th>谷</th><th>目标 λ（nm）</th><th>预测结构 λ（nm）</th><th>目标 R</th><th>预测 R</th><th>位移</th><th>宽度变化</th></tr></thead><tbody><tr><td>1</td><td>772.072</td><td>771.071</td><td>1.202%</td><td>0.365%</td><td>1.001 nm</td><td>5.13%</td></tr><tr><td>2</td><td>881.181</td><td>877.177</td><td>1.990%</td><td>1.359%</td><td>4.004 nm</td><td>3.81%</td></tr></tbody></table>
+<p>全波段 R 的 RMSE 为 0.04041。宽度指半突出度宽度，不据此宣称模态 Q 或 BIC。层序与训练集一致，尚未验证 2.0 的中间金层结构。</p>
+<img src="spectral_comparison.png" alt="目标、原始结构本机复现和网络预测结构的实际 FDTD R/T/A">
+<h2>完整记录</h2><ul><li><a href="README.md">完整报告及复现方法</a></li><li><a href="analysis.json">逐谷分析 JSON</a></li><li><a href="reference.csv">原始结构本机 R/T/A</a> · <a href="prediction.csv">网络预测结构 R/T/A</a></li><li><a href="reference_native.json">原始结构原生记录</a> · <a href="prediction_native.json">预测结构原生记录</a></li><li><a href="https://github.com/CypherZzzyer05/Optics_design/tree/16beb8e/Metaformer_As2Se3">代码、模型及数据项目</a></li></ul>
+</body></html>
