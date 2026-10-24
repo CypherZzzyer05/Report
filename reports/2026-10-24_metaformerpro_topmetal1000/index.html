@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MetaformerPro：新层序1000样本训练与验证</title><style>
+body{max-width:1100px;margin:36px auto;padding:0 24px;font:16px/1.8 'Microsoft YaHei',sans-serif;color:#233044}
+h1{font-size:29px;line-height:1.4}h2{margin-top:2em;border-bottom:1px solid #d5e0e9;padding-bottom:.3em;font-size:23px}
+img{display:block;width:100%;height:auto;margin:20px 0}table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}
+td,th{border:1px solid #d5dfe7;padding:9px;text-align:left}th{background:#eaf1f7}
+code{font-family:Consolas,monospace;overflow-wrap:anywhere}pre{background:#f2f5f8;padding:16px;overflow:auto}
+pre code{overflow-wrap:normal}a{color:#1768ac}strong{color:#133f60}
+footer{margin-top:36px;border-top:1px solid #d5e0e9;padding-top:16px;font-size:14px}
+@media(max-width:650px){body{padding:0 14px;font-size:15px}table{display:block;overflow-x:auto}h1{font-size:24px}}
+@media print{body{margin:0;font-size:11pt}h2{break-after:avoid}img{break-inside:avoid}}
+</style></head><body><h1>MetaformerPro：新层序1000样本训练与验证</h1>
+<p>2026-10-24汇总；训练于2026-10-23完成。独立分支 <code>codex/metaformerpro-topmetal-1000</code>。这次只使用新数据，两个输出头均从随机初始化训练，未复用旧层序权重。</p>
+<p>验证规则选中 <strong>circular，seed 42</strong>。所选方案三种子平均镜像等价测试MSE为 <strong>0.025325</strong>，比训练集标签均值常数基线低 <strong>69.5%</strong>。这是本批数值数据内的比较，不与旧物理体系测试误差直接比较。</p>
+<h2>数据查收</h2>
+<p>1000/1000个样本，固定800训练/100验证/100测试；样本ID、原始NPZ、汇总数组、配置及材料身份核验见 <a href="data_audit.json">data_audit.json</a>。数据SHA256：<code>bc0f21a90ed7dcb3a228c81dfef023a0425cfed618a8bc275cc6487b4430621d</code>。</p>
+<p>层序自下而上：延伸至下PML的厚SiO₂、100 nm JC Au、As₂Se₃四聚体。金属区域z=-100..0 nm，柱体z=0..H，T监视器在SiO₂内。Au使用2.2.0的修正被动模型；金层z网格约7.733 nm，其他区域自动网格。全部达到自动关断，质量仍为pipeline_validation，未据此认定网格精度收敛。</p>
+<h2>光谱覆盖</h2>
+<p>有 <strong>691/1000</strong> 条光谱在1000 nm以上存在普通明显谷，但按原先固定的严格双主谷标准，只有 <strong>3/1000</strong> 条合格，且 <strong>没有一条两个主谷都在1000 nm以上</strong>。普通谷与严格双主谷是不同统计，不能混用。当前几何范围并未充分覆盖长波双主谷目标，仅增加同范围的随机样本不能保证解决这一问题。</p>
+<p>普通谷：突出度≥0.1、半突出度宽度≥5个采样间隔。严格配对还要求各谷R≤0.2、突出度≥0.4、距波段边界&gt;30 nm，谷间距≥30 nm、谷间隆起与较浅谷的反射率差≥0.2。枚举所有合格配对后统计，未只检查每条谱最强的一对。</p>
+<table>
+<thead>
+<tr>
+<th>分割</th>
+<th style="text-align: right;">样本数</th>
+<th style="text-align: right;">严格双主谷</th>
+<th style="text-align: right;">两主谷均&gt;1000 nm</th>
+<th style="text-align: right;">至少一个普通谷&gt;1000 nm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>train</td>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">551</td>
+</tr>
+<tr>
+<td>val</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">74</td>
+</tr>
+<tr>
+<td>test</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">66</td>
+</tr>
+</tbody>
+</table>
+<p>逐谱结果见 <a href="spectral_coverage.json">spectral_coverage.json</a>。该统计描述输入数据，不使用模型测试误差筛选展示样本。样本207预先固定作界面演示，只有一个满足普通阈值的谷（约770.07 nm），未作双谷、最佳结构或最佳预测的宣称。半突出度宽度不等同于模态线宽，未由此计算Q。</p>
+<p><img alt="新数据光谱分布" src="dataset_overview.png" /></p>
+<h2>训练和选择</h2>
+<p>现有两个头：Sigmoid七输出、圆周角度输出；骨干均为4层96维，约32万参数。每个方案3种子，batch8，AdamW学习率3e-4，最多100轮、20轮无足够改善早停。标准化只使用800条训练谱。未在本轮增加新网络模块或容量扫描。</p>
+<p>先要求五尺寸验证MSE不超过Sigmoid基线的1.02倍、dX MAE不超过其1.05倍，再选三种子平均镜像验证误差最低者，部署种子取该方案验证表现居中者。选择在本轮测试评估前冻结；两种头均按预先计划报告测试结果，不据测试结果更换选择。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">镜像验证MSE</th>
+<th style="text-align: right;">五尺寸验证MSE</th>
+<th style="text-align: right;">dX MAE/nm</th>
+<th>通过尺寸门槛</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>circular</td>
+<td style="text-align: right;">0.024448</td>
+<td style="text-align: right;">0.021820</td>
+<td style="text-align: right;">5.844</td>
+<td>True</td>
+</tr>
+<tr>
+<td>pro_v01</td>
+<td style="text-align: right;">0.024951</td>
+<td style="text-align: right;">0.021992</td>
+<td style="text-align: right;">5.942</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="训练与验证" src="training_curves.png" /></p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">种子</th>
+<th style="text-align: right;">最佳轮</th>
+<th style="text-align: right;">总轮数</th>
+<th style="text-align: right;">总耗时/秒</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pro_v01</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">81.4</td>
+</tr>
+<tr>
+<td>pro_v01</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">72.1</td>
+</tr>
+<tr>
+<td>pro_v01</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">154.2</td>
+</tr>
+<tr>
+<td>circular</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">177.9</td>
+</tr>
+<tr>
+<td>circular</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">99.2</td>
+</tr>
+<tr>
+<td>circular</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">111.0</td>
+</tr>
+</tbody>
+</table>
+<h2>测试结果</h2>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">原始标签周期MSE</th>
+<th style="text-align: right;">镜像等价MSE</th>
+<th style="text-align: right;">五尺寸MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pro_v01</td>
+<td style="text-align: right;">0.036227</td>
+<td style="text-align: right;">0.026211</td>
+<td style="text-align: right;">0.024485</td>
+</tr>
+<tr>
+<td>circular</td>
+<td style="text-align: right;">0.034444</td>
+<td style="text-align: right;">0.025325</td>
+<td style="text-align: right;">0.022949</td>
+</tr>
+</tbody>
+</table>
+<p>圆周头相对Sigmoid头，三种子平均镜像等价测试MSE降低 <strong>3.4%</strong>，五尺寸MSE降低 <strong>6.3%</strong>。奇数角MAE降低约0.44°，偶数角MAE增加约0.53°，并非所有指标都改善。dY误差仍接近训练均值常数预测，说明该参数尚未被可靠辨识。</p>
+<p>训练均值常数基线的镜像等价MSE：0.083127。三种子均值用于方案比较，部署仍为单个验证选中的种子。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align: right;">Sigmoid头 MAE</th>
+<th style="text-align: right;">圆周头 MAE</th>
+<th>单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P</td>
+<td style="text-align: right;">5.182</td>
+<td style="text-align: right;">4.412</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>L</td>
+<td style="text-align: right;">1.438</td>
+<td style="text-align: right;">1.434</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>H</td>
+<td style="text-align: right;">5.076</td>
+<td style="text-align: right;">4.109</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>dX</td>
+<td style="text-align: right;">6.649</td>
+<td style="text-align: right;">6.394</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>dY</td>
+<td style="text-align: right;">14.962</td>
+<td style="text-align: right;">14.527</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>奇数角</td>
+<td style="text-align: right;">12.921</td>
+<td style="text-align: right;">12.476</td>
+<td>°</td>
+</tr>
+<tr>
+<td>偶数角</td>
+<td style="text-align: right;">12.397</td>
+<td style="text-align: right;">12.931</td>
+<td>°</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="各参数误差" src="parameter_errors.png" /></p>
+<p>部署权重在100条测试结构中的合法数为 100/100；CPU重载与保存预测最大归一化差为 8.87e-07。训练标准化、样本ID、层序和数据身份检查通过。几何合法不代表已经复现目标光谱；本轮未运行新FDTD。</p>
+<h2>固定光谱到结构</h2>
+<p>PyCharm打开 <code>D:/projects/MetaformerPro_topmetal/Metaformer_As2Se3</code>，解释器 <code>D:/Anaconda3/envs/transformer_env/python.exe</code>。运行项16训练新批次；运行项17使用 <code>models/metaformerpro_topmetal.pt</code> 和 <code>inputs/target_topmetal.csv</code>，保存参数和正确层序的示意图。</p>
+<pre><code class="language-powershell">python train_metaformerpro.py all --config configs/metaformerpro_topmetal1000.json
+python analyze_topmetal_spectra.py
+python summarize_topmetal1000.py
+python predict_metaformerpro.py --checkpoint models/metaformerpro_topmetal.pt --spectrum inputs/target_topmetal.csv --output results/topmetal1000/prediction_207.json --show
+</code></pre>
+<p><img alt="新层序结构候选" src="prediction_207.png" /></p>
+<p>原始新数据包保持在用户提供的D盘目录；项目仅复制约10 MB汇总及任务配置。旧数据与旧权重保留。模型输出为候选结构，目标谱能否由其实现仍需后续电磁回验。</p><footer><p><a href="README.md">Markdown 原文</a> ·
+<a href="summary.json">训练汇总</a> · <a href="selection.json">冻结选择</a> ·
+<a href="test_metrics.json">逐次测试指标</a> · <a href="verification.json">重载与身份核验</a> ·
+<a href="prediction_207.json">演示结构参数</a></p>
+<p><a href="https://github.com/CypherZzzyer05/Optics_design/tree/35af85b/Metaformer_As2Se3">本轮模型代码、配置、数据与部署权重（35af85b）</a></p>
+<p><a href="../../README.md">报告仓库目录</a></p></footer></body></html>
