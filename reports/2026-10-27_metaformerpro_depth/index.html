@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MetaformerPro：4／8／12层编码器对照</title><style>
+body{max-width:1100px;margin:36px auto;padding:0 24px;font:16px/1.8 'Microsoft YaHei',sans-serif;color:#233044}
+h1{font-size:29px;line-height:1.4}h2{margin-top:2em;border-bottom:1px solid #d5e0e9;padding-bottom:.3em;font-size:23px}
+img{display:block;width:100%;height:auto;margin:20px 0}table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}
+td,th{border:1px solid #d5dfe7;padding:9px;text-align:left}th{background:#eaf1f7}
+code{font-family:Consolas,monospace;overflow-wrap:anywhere}pre{background:#f2f5f8;padding:16px;overflow:auto}
+pre code{overflow-wrap:normal}a{color:#1768ac}strong{color:#133f60}
+footer{margin-top:36px;border-top:1px solid #d5e0e9;padding-top:16px;font-size:14px}
+@media(max-width:650px){body{padding:0 14px;font-size:15px}table{display:block;overflow-x:auto}h1{font-size:24px}}
+@media print{body{margin:0;font-size:11pt}h2{break-after:avoid}img{break-inside:avoid}}
+</style></head><body><h1>MetaformerPro：4 / 8 / 12层编码器对照</h1>
+<p>2026-10-27。独立分支 <code>codex/metaformerpro-depth-study</code>，工作树 <code>D:/projects/MetaformerPro_depth/Metaformer_As2Se3</code>。</p>
+<p>验证集按预设规则选中 <strong>12层编码器，seed 44</strong>。三种子平均镜像测试MSE相对4层增加6.3%，五尺寸MSE增加5.6%。 测试未复现验证改善，本轮未据测试结果再改选其它深度。12层权重作为实验候选保留，现用4层权重不覆盖。</p>
+<h2>对照设置</h2>
+<p>本轮只改变编码器层数。4层基线复用同一数据上已训练的42/43/44三个种子；8层和12层各从随机初始化训练三个种子，共六次新训练。三组均为96维嵌入、4个注意力头、192维前馈层、圆周角度输出、原始0.02标准差下限、dropout 0.1。训练仍为AdamW、batch8、学习率3e-4、weight decay 0.001，最多100轮，20轮无足够改善早停。</p>
+<p>数据仍为生成器2.2.0的1000条修正材料与层序数据，固定800训练/100验证/100测试，SHA256：<code>bc0f21a90ed7dcb3a228c81dfef023a0425cfed618a8bc275cc6487b4430621d</code>。层序为厚SiO₂ / 100 nm被动JC Au / As₂Se₃四聚体，SiO₂延伸至下PML。金属局部8 nm网格的数据质量仍为 <code>pipeline_validation</code>；本轮没有新增FDTD或正向网络。输入预处理统计仅用800条训练谱拟合。</p>
+<p>预设验证选型条件：三种子平均联合镜像验证MSE至少降低1%；五尺寸验证MSE最多增加2%，dX MAE最多增加5%，dY MAE最多增加2%。合格者中选验证误差最低的深度，以该深度验证表现居中的种子保存推理候选；无合格者则保留4层。<strong>验证选择冻结后，仅评估4层基线和被选中的方案。</strong> 这100条测试此前已被查看，本轮属于既有测试集上的重复比较，不是新增盲测。</p>
+<h2>验证与收敛</h2>
+<table>
+<thead>
+<tr>
+<th>深度</th>
+<th style="text-align: right;">参数量</th>
+<th style="text-align: right;">保存权重训练eval MSE均值</th>
+<th style="text-align: right;">镜像验证MSE均值 ± 种子标准差</th>
+<th style="text-align: right;">五尺寸验证MSE</th>
+<th style="text-align: right;">dX MAE/nm</th>
+<th style="text-align: right;">dY MAE/nm</th>
+<th>尺寸门槛 / 1%改善</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12层编码器</td>
+<td style="text-align: right;">919,210</td>
+<td style="text-align: right;">0.018922</td>
+<td style="text-align: right;">0.023774 ± 0.000708</td>
+<td style="text-align: right;">0.021780</td>
+<td style="text-align: right;">5.936</td>
+<td style="text-align: right;">13.681</td>
+<td>是 / 是</td>
+</tr>
+<tr>
+<td>8层编码器</td>
+<td style="text-align: right;">620,074</td>
+<td style="text-align: right;">0.018819</td>
+<td style="text-align: right;">0.024404 ± 0.000374</td>
+<td style="text-align: right;">0.021692</td>
+<td style="text-align: right;">6.217</td>
+<td style="text-align: right;">13.558</td>
+<td>否 / 否</td>
+</tr>
+<tr>
+<td>4层基线</td>
+<td style="text-align: right;">320,938</td>
+<td style="text-align: right;">0.018951</td>
+<td style="text-align: right;">0.024448 ± 0.000623</td>
+<td style="text-align: right;">0.021820</td>
+<td style="text-align: right;">5.844</td>
+<td style="text-align: right;">13.791</td>
+<td>是 / 否</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="三个深度的验证比较及全部9次运行曲线" src="depth_comparison.png" /></p>
+<p>六次新训练合计24.5分钟，不包含复用的4层训练与脚本整理。三种子标准差仅描述训练随机性，不是物理精度置信区间。</p>
+<table>
+<thead>
+<tr>
+<th>深度</th>
+<th style="text-align: right;">种子</th>
+<th style="text-align: right;">保存轮次</th>
+<th style="text-align: right;">总轮数</th>
+<th style="text-align: right;">训练秒数</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4层基线</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">177.9</td>
+<td>复用已有运行</td>
+</tr>
+<tr>
+<td>4层基线</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">99.2</td>
+<td>复用已有运行</td>
+</tr>
+<tr>
+<td>4层基线</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">111.0</td>
+<td>复用已有运行</td>
+</tr>
+<tr>
+<td>8层编码器</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: right;">211.7</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>8层编码器</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">185.5</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>8层编码器</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">204.9</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>12层编码器</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">307.9</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>12层编码器</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: right;">325.7</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>12层编码器</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">235.7</td>
+<td>本轮新训练</td>
+</tr>
+</tbody>
+</table>
+<p>表中训练eval和验证误差来自同一个保存权重，口径一致；曲线虚线为含dropout的逐轮训练批损失。训练损失继续降低而验证平台时，应按保存轮次评价，不能把末轮训练损失当作泛化提升。本轮结果只说明这些深度在固定配方和当前数据上的表现，不能单独证明样本量是误差主因，也不能排除其它训练配方的影响。</p>
+<h2>冻结后的测试</h2>
+<table>
+<thead>
+<tr>
+<th>深度</th>
+<th style="text-align: right;">原始标签周期MSE</th>
+<th style="text-align: right;">镜像等价MSE</th>
+<th style="text-align: right;">五尺寸MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4层基线</td>
+<td style="text-align: right;">0.034444</td>
+<td style="text-align: right;">0.025325</td>
+<td style="text-align: right;">0.022949</td>
+</tr>
+<tr>
+<td>12层编码器</td>
+<td style="text-align: right;">0.035540</td>
+<td style="text-align: right;">0.026911</td>
+<td style="text-align: right;">0.024225</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align: right;">4层基线MAE</th>
+<th style="text-align: right;">冻结选择MAE</th>
+<th>单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P</td>
+<td style="text-align: right;">4.412</td>
+<td style="text-align: right;">4.919</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>L</td>
+<td style="text-align: right;">1.434</td>
+<td style="text-align: right;">1.619</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>H</td>
+<td style="text-align: right;">4.109</td>
+<td style="text-align: right;">4.316</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>dX</td>
+<td style="text-align: right;">6.394</td>
+<td style="text-align: right;">6.584</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>dY</td>
+<td style="text-align: right;">14.527</td>
+<td style="text-align: right;">14.625</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>奇数角</td>
+<td style="text-align: right;">12.476</td>
+<td style="text-align: right;">13.671</td>
+<td>°</td>
+</tr>
+<tr>
+<td>偶数角</td>
+<td style="text-align: right;">12.931</td>
+<td style="text-align: right;">12.760</td>
+<td>°</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="逐参数测试误差" src="parameter_errors.png" /></p>
+<p>以上为三种子平均；实验候选推理使用单个seed 44。两角按同一个联合镜像代表计算周期误差，原始标签周期MSE同时保留。候选种子的100条测试结构中100/100通过几何检查，CPU与保存测试预测最大归一化差为1.07e-06，训练集标准化检查通过。参数误差与几何合法性不代表候选已复现输入光谱，本轮没有候选FDTD回验。</p>
+<h2>使用</h2>
+<p>原4层权重保留；本轮冻结候选为 <code>models/metaformerpro_depth.pt</code>，SHA256：<code>6c6c8c4f659c26b3f0c3f65dbeb7ed3d0f92fc8bfc8d031b4f136253642468fe</code>。PyCharm使用 <code>D:/Anaconda3/envs/transformer_env/python.exe</code>；运行项20执行本轮深度对照，运行项21读取 <code>inputs/target_topmetal.csv</code> 并展示实验候选结构。运行项17继续使用原4层模型。推理JSON的 <code>model_config</code> 明确记录层数和宽度。输入仍要求700–1700 nm等间距1000点，反射率0–1。</p>
+<pre><code class="language-powershell">python train_metaformerpro_refine.py all --config configs/metaformerpro_topmetal_depth.json
+python summarize_metaformerpro_depth.py
+python predict_metaformerpro.py --checkpoint models/metaformerpro_depth.pt --spectrum inputs/target_topmetal.csv --output results/topmetal_depth/prediction_207.json --show
+</code></pre>
+<p>207号仍是固定界面示例，没有按测试误差挑选“最佳”结构。图中的光谱为输入目标曲线。</p>
+<p><img alt="冻结选择的候选结构" src="prediction_207.png" /></p>
+<p>原始逐运行数据见 <a href="validation_results.json">validation_results.json</a>、<a href="selection.json">selection.json</a>、<a href="test_metrics.json">test_metrics.json</a>、<a href="verification.json">verification.json</a>。</p><footer><p><a href="README.md">Markdown 原文</a> ·
+<a href="summary.json">训练汇总</a> · <a href="selection.json">冻结选择</a> ·
+<a href="test_metrics.json">逐次测试指标</a> · <a href="verification.json">重载与身份核验</a> ·
+<a href="prediction_207.json">演示结构参数</a></p>
+<p><a href="https://github.com/CypherZzzyer05/Optics_design/tree/75cd17d/Metaformer_As2Se3">本轮深度实验代码与候选权重（75cd17d）</a></p>
+<p><a href="../../README.md">报告仓库目录</a></p></footer></body></html>
