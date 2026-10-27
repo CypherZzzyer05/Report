@@ -2,7 +2,7 @@
 
 此仓库集中保存报告、图表与对应数据；生成器代码保存在各自独立仓库。
 
-最新的[模型实验与保留权重](https://github.com/CypherZzzyer05/Optics_design/tree/75cd17d/Metaformer_As2Se3)已单独归档，报告区分训练、验证、测试曲线与已有FDTD光谱。
+最新的[模型实验与保留权重](https://github.com/CypherZzzyer05/Optics_design/tree/1b31513/Metaformer_As2Se3)已单独归档，报告区分训练、验证、测试曲线与已有FDTD光谱。
 
 | 日期 | 报告 | 内容 |
 | --- | --- | --- |
