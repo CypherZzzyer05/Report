@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>光谱信息与真实加工间隙</title><style>
+body{max-width:1100px;margin:36px auto;padding:0 24px;font:16px/1.8 'Microsoft YaHei',sans-serif;color:#233044}
+h1{font-size:29px;line-height:1.4}h2{margin-top:2em;border-bottom:1px solid #d5e0e9;padding-bottom:.3em;font-size:23px}
+img{display:block;width:100%;height:auto;margin:20px 0}table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}
+td,th{border:1px solid #d5dfe7;padding:9px;text-align:left}th{background:#eaf1f7}
+code{font-family:Consolas,monospace;overflow-wrap:anywhere}a{color:#1768ac}strong{color:#133f60}
+@media(max-width:650px){body{padding:0 14px;font-size:15px}table{display:block;overflow-x:auto}h1{font-size:24px}}
+@media print{body{margin:0;font-size:11pt}h2{break-after:avoid}img{break-inside:avoid}}
+</style></head><body><h1>MetaformerPro：光谱信息、特征表达与真实加工间隙</h1>
+<p>2026-10-27。本次只调研文献、复核已有训练证据并计算几何距离，没有新增神经网络训练或 FDTD。原模型和生成器均未修改。</p>
+<p><strong>目前有理由关注可辨识性与加工约束，不能把误差全部归因于网络层数或样本量。</strong> 某些谱差异可能尚未被网络充分利用；但镜像同谱和低于数值误差的变化，不能靠 FFT、加深网络或增加同类样本消除。另一方面，名义 dX、dY 并不是旋转后的最小开口，现有批次确实包含很难直接送加工的几何。</p>
+<h2>1. 实际沟道究竟有多窄</h2>
+<p>对象为已完成的生成器 2.2.0 新层序 1000 条数据：厚 SiO₂ / Au 100 nm / As₂Se₃ 四聚体。数据 SHA256 为 <code>bc0f21a90ed7dcb3a228c81dfef023a0425cfed618a8bc275cc6487b4430621d</code>。本报告的距离统计覆盖全部 1000 条，不以训练/测试划分筛选样本。</p>
+<p>按实际旋转后的四个正方形计算多边形之间的欧氏最短距离，同时检查单元内部和周围八个周期单元。中心坐标为 <code>±(L+dX)/2</code>、<code>±(L+dY)/2</code>；dX、dY 是未旋转时的名义间距。算法用顶点到边投影双向取最小值，并用未旋转、共同旋转 45° 的解析例子及最窄样本的最近点核对。数值见 <a href="actual_gap_statistics.json">actual_gap_statistics.json</a>；距离函数沿用仓库中的 <a href="../../scripts/audit_manufacturability.py">audit_manufacturability.py</a>。</p>
+<table>
+<thead>
+<tr>
+<th>范围</th>
+<th style="text-align: right;">最小值 / nm</th>
+<th style="text-align: right;">中位数 / nm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同一个周期单元内</td>
+<td style="text-align: right;">13.876</td>
+<td style="text-align: right;">69.538</td>
+</tr>
+<tr>
+<td>跨周期单元</td>
+<td style="text-align: right;">4.615</td>
+<td style="text-align: right;">112.891</td>
+</tr>
+<tr>
+<td>两者合并后的真实最小间隙</td>
+<td style="text-align: right;"><strong>4.615</strong></td>
+<td style="text-align: right;"><strong>67.696</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>真实最小间隙阈值（累计）</th>
+<th style="text-align: right;">样本数 / 1000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&lt;20 nm</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td>&lt;50 nm</td>
+<td style="text-align: right;">190</td>
+</tr>
+<tr>
+<td>&lt;80 nm</td>
+<td style="text-align: right;">697</td>
+</tr>
+<tr>
+<td>&lt;100 nm</td>
+<td style="text-align: right;">929</td>
+</tr>
+</tbody>
+</table>
+<p>这些只是描述性分界，不是已获工艺平台认证的加工极限。若暂用 ≥80 nm、≥100 nm 进行讨论，分别有 303、71 条符合；不能据此直接宣布它们均可加工。</p>
+<p><strong>最窄的是 967 号样本，发生在相邻周期单元之间。</strong> 其 P=645.702 nm、L=207.870 nm、H=362.794 nm，名义 dX=128.368 nm、dY=139.275 nm，奇/偶角约 +44.705° / −44.906°，但周期边界附近的真实开口只有 4.615 nm。仅检查四聚体内部会漏掉这个限制。</p>
+<p><img alt="旋转与周期边界造成的真实窄开口" src="narrowest_actual_gap.png" /></p>
+<p>这里是局部角点之间的窄开口，不能把它当作整条均匀宽度 4.6 nm 的矩形深槽。H/g≈78.6 只说明局部拥挤程度。作为几何敏感性示例，若顶面尺寸和中心固定、侧壁从竖直向外倾斜 β，底边长为 <code>L_bottom=L_top+2H tan(β)</code>；在这一假设下，967 号仅 β=1° 就会在底部跨周期接触。这个角度是假设值，并非实测 As₂Se₃ 工艺数据。</p>
+<p><strong>不能把整批最窄样本套到当前演示候选上。</strong> 固定输入 207 号的三个结构如下；后两者仍是尚未做 FDTD 回验的网络候选。</p>
+<table>
+<thead>
+<tr>
+<th>结构</th>
+<th style="text-align: right;">高度 / nm</th>
+<th style="text-align: right;">真实最小间隙 / nm</th>
+<th style="text-align: right;">假设底部外扩 2° 后 / nm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据集原始 207</td>
+<td style="text-align: right;">355.18</td>
+<td style="text-align: right;">67.98</td>
+<td style="text-align: right;">38.42</td>
+</tr>
+<tr>
+<td>现用 4 层网络输出</td>
+<td style="text-align: right;">362.36</td>
+<td style="text-align: right;"><strong>91.37</strong></td>
+<td style="text-align: right;">61.29</td>
+</tr>
+<tr>
+<td>实验 12 层网络输出</td>
+<td style="text-align: right;">361.57</td>
+<td style="text-align: right;"><strong>117.21</strong></td>
+<td style="text-align: right;">91.77</td>
+</tr>
+</tbody>
+</table>
+<p>这些候选比最窄样本宽裕，但侧壁形状、圆角、残留和刻蚀终点仍会影响实际开口；表格不构成良率保证。4.615 nm 也小于当前约 7.8 nm 的横向网格，是数值敏感性线索；仅凭这一比较，不能断言共形网格完全不能表示它，或整批光谱都无效。</p>
+<h2>2. 文献能证明哪些加工能力</h2>
+<table>
+<thead>
+<tr>
+<th>一手来源</th>
+<th>已展示的结果</th>
+<th>对本器件的证据边界</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://schvartzmanlab.com/wp-content/uploads/2022/08/2022-tzadka-opt.-exp.pdf">Tzadka Shalit 等，Optics Express 2022，DOI 10.1364/OE.462448</a></td>
+<td>通过溶剂辅助纳米压印，在 As₂Se₃ 表面形成 20 nm 线宽、200 nm 周期图形</td>
+<td><strong>20 nm 线宽不是 20 nm 空隙</strong>；没有证明 Au 上约 300 nm 高柱间深窄开口的可重复加工</td>
+</tr>
+<tr>
+<td><a href="https://einstein.nju.edu.cn/upload/kindeditor/file/20241113/20241113170529_5125.pdf">Gu 等，Opto-Electronic Science 2024，DOI 10.29026/oes.2024.240017</a></td>
+<td>EBL、Cr 硬掩膜和 ICP 在块体 As₂Se₃ 上刻出约 8 μm 高柱；柱径为微米尺度</td>
+<td>证明该材料可深刻蚀，不能外推为纳米级开口已成熟；文章也提示去 Cr 掩膜需避免损伤 As₂Se₃</td>
+</tr>
+<tr>
+<td><a href="https://chalcogen.ro/117_PopescuAA.pdf">Popescu 等，Chalcogenide Letters 2020</a></td>
+<td>玻璃 / 46 nm Au / 连续 As₂Se₃ 膜的实验 SPR</td>
+<td>支持 Au 上制备连续 As₂Se₃ 膜的先例；没有验证独立纳米柱、Au 刻蚀终点或窄开口良率</td>
+</tr>
+<tr>
+<td><a href="https://www.nature.com/articles/s41598-017-01939-2">Piggott 等，Scientific Reports 2017</a></td>
+<td>将制造约束直接纳入逆向设计，并在硅光平台实测器件</td>
+<td>支持“先限制设计空间”的方法，不能借用硅工艺尺寸作为 As₂Se₃/Au 工艺承诺</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结论：目前查到的证据不足以支持整批结构可直接加工，尤其不能支持 4.6–20 nm 的这类深窄局部开口。</strong> 约 90–120 nm 的候选更适合作为与工艺平台讨论的起点。最终最小间隙应由目标平台在实际 As₂Se₃ 膜厚、Au 底层和掩膜条件下的小面积试刻确定；关注底部残留、侧壁角、圆角、Au 损伤和尺寸偏差，不能只看电子束曝光分辨率。</p>
+<p>现有几何合法性检查要求不相交、位于周期单元内，却没有工艺最小间隙。后续应同时约束旋转后的同单元间隙与跨周期间隙，并将侧壁/圆角等实际几何纳入最终回验。这里只提出修改方向，未擅自改变当前生成器。</p>
+<h2>3. “信息不足”和“特征不明显”需要分开</h2>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>当前证据</th>
+<th>能做什么、不能做什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全局多解</td>
+<td>已有一个受控镜像对照中，<code>(θ奇,θ偶)→(−θ偶,−θ奇)</code> 的反射率最大差约 1.71×10⁻⁸</td>
+<td>应承认等价结构；不能要求单条同谱输入唯一恢复两个原始角标签</td>
+</tr>
+<tr>
+<td>参数响应弱或互相抵消</td>
+<td>训练集 dY 对单个波长的最大绝对线性相关系数仅 0.106；当前 dY 验证 MAE 13.79 nm，常数基线约 14.49 nm</td>
+<td>提示当前观测下信息提取有限，但低线性相关不能证明不存在非线性信息</td>
+</tr>
+<tr>
+<td>目标覆盖不足</td>
+<td>严格双主谷仅 3/1000 条；其中两个谷均 &gt;1000 nm 的为 0 条；普通长波谷与严格双主谷不是同一计数</td>
+<td>重新编码不能补出数据未覆盖的目标区域</td>
+</tr>
+<tr>
+<td>数值变化可能遮盖弱信号</td>
+<td>既有单个完整器件的 8/4 nm、4/2 nm 金属局部网格对照尚不一致</td>
+<td>不能把低于数值不确定性的变化都当成可靠几何信息；也不能将该样本的误差数值套给全部样本</td>
+</tr>
+<tr>
+<td>网络与训练配方</td>
+<td>12 层相对 4 层验证误差降 2.8%，但既有测试误差升 6.3%</td>
+<td>单纯加深本轮没有取得可靠泛化改善；不足以单独确定误差主因</td>
+</tr>
+</tbody>
+</table>
+<p>本节沿用 <a href="../2026-10-22_rotation_jc220/README.md">镜像与网格对照</a>、<a href="../2026-10-27_metaformerpro_refine/README.md">信号诊断与优化</a>、<a href="../2026-10-27_metaformerpro_depth/README.md">深度对照</a>，没有增加新实验。测试集已多次查看，后续比较也不能称为新增盲测。</p>
+<p>逆向纳米光子文献已经讨论了多种结构对应相似光谱导致标签冲突的问题。<a href="https://arxiv.org/abs/1710.04724">Liu 等，ACS Photonics 2018</a> 支持这一判断，但其串联网络方法不是本次默认方案，也没有据此恢复用户暂缓的正向网络。</p>
+<p>进一步诊断可采用参数范围归一化后的响应雅可比矩阵，比较各列强度及其相关性，再用数值/测量误差加权。弱列意味着灵敏度不足，近共线列意味着参数变化容易互相补偿。<a href="https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=901617">NIST 的散射测量不确定度分析</a> 给出了这一类局部推断框架。未建立可信误差尺度前，只宜用它做相对比较；局部满秩也不能消除全局镜像多解。</p>
+<h3>增加独立观测比变换已有光谱更有机会补信息</h3>
+<p>多波长、角度和 Mueller 矩阵的联合测量已有降低参数相关性的实验先例，见 <a href="https://www.light-am.com/en/article/doi/10.37188/lam.2021.018">Gödecke 等，Light: Advanced Manufacturing 2021</a>。但我们器件应先用少量受控对照确认哪个通道有用，再考虑增加大批数据。</p>
+<p>不能简单保证“再加 y 偏振就解决角度镜像”。依据平面镜像对 Jones 矩阵的变换，固定实验室 x/y 基底中，同偏振复振幅可保持相同，交叉偏振复振幅改变符号；只测交叉通道强度仍可能相同。这是结合 <a href="https://arxiv.org/pdf/1008.4117">Menzel 等的对称性框架</a> 对本结构的物理推断，不是本次新仿真结果。需要验证偏振混合后的相干信息、适当方位的斜入射或完整 Jones/Mueller 观测是否真正打破目标等价。仅增加 Rxx 的相位也未必够用。</p>
+<p>R、T、A 中 <code>A=1−R−T</code>，不能算三个独立观测。当前 Au100 的透射很弱，是否能提供可靠额外信息，要对其绝对精度核对。</p>
+<h2>4. 编码怎样改，才有明确目的</h2>
+<p><strong>建议保留全谱背景和绝对波长位置，再让共振附近获得更细的表达。</strong> 现有分块嵌入不等于已经证明丢失谷信息；改编码仍需与相同骨干、相同划分的原始谱基线对照。</p>
+<ol>
+<li>全谱继续作为主输入；根据输入谱检测局部谷，提取覆盖中心、两侧斜率和背景的局部片段。局部坐标需同时保留绝对中心波长及波长跨度，避免把不同位置的谷缩放成一样。</li>
+<li>可将局部频率、深度、非对称程度和拟合宽度作为辅助表达，保留拟合残差与原曲线。不能强制每条谱都有两个明确模式，或只用少数谷参数替代全部光谱。</li>
+<li>参数敏感度若用于选择波段，必须在训练数据或独立设计的对照上确定；推理阶段只依赖输入谱。不能拿测试结构标签选择其“最有信息”的窗口。</li>
+</ol>
+<p>共振参数化已有直接相关先例：<a href="https://arxiv.org/abs/2105.03001">Ma 等的 RIDL 作者稿</a> 将共振形状分解、模式信息和学习结合，用于高 Q 谱的表达。因此，“谷特征输入”本身不能直接声称原创。我们可探索它与实际可观测性、几何制造约束的结合，但性能和创新性均需进一步验证。</p>
+<p><a href="https://web.stanford.edu/group/fan/publication/Fan_JOSAA_20_569_2003.pdf">Fan 等的 Fano 时域耦合模理论</a> 提供共振与直接背景路径的物理解释。实际 Au 有吸收，强度反射谱并不保证能唯一拆出辐射/吸收损耗；半突出度宽度也不能直接视作模式线宽后宣称 BIC/Q。需先确认模式及拟合模型适用性。</p>
+<p>FFT 或导数可以改变有限网络学习特征的难易，但不能产生新测量信息。完整复数 FFT 可逆，若只留幅度会丢失相位，对位移的辨识还可能变差。<a href="https://doi.org/10.1038/s41467-025-66187-9">Feldman 等，Nature Communications 2025</a> 的 Fourier scatterometry 指远场角度/k 空间观测，并非对一条 R(λ) 做 FFT；其有限硅结构实验不能直接等同于本周期阵列。</p>
+<p>建议下一步顺序为：<strong>先确定加工可接受的几何域，再比较噪声尺度下哪些观测能区分七个参数，最后在固定小骨干上检验共振局部编码。</strong> 如果最终部署只输入一条 R(λ)，目标应允许输出满足光谱与加工条件的等价候选；不能承诺所有七个原始标签均唯一可逆。本次到此结束，未启动上述后续计算。</p><p><a href="../../README.md">报告目录</a></p></body></html>

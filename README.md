@@ -6,6 +6,7 @@
 
 | 日期 | 报告 | 内容 |
 | --- | --- | --- |
+| 2026-10-27 | [光谱信息、特征表达与真实加工间隙](reports/2026-10-27_information_and_fabrication/README.md) · [离线 HTML](reports/2026-10-27_information_and_fabrication/index.html) | 文献调研与1000条旋转/周期几何核对；最小开口4.615 nm，190条低于50 nm；区分可辨识性与特征编码，未新增训练或FDTD |
 | 2026-10-27 | [MetaformerPro：4／8／12层编码器对照](reports/2026-10-27_metaformerpro_depth/README.md) · [离线 HTML](reports/2026-10-27_metaformerpro_depth/index.html) | 六次新训练；12层验证误差降2.8%，测试误差升6.3%；深度实验权重与全部曲线保留，现用4层权重不覆盖 |
 | 2026-10-27 | [MetaformerPro：新层序数据上的进一步优化](reports/2026-10-27_metaformerpro_refine/README.md) · [离线 HTML](reports/2026-10-27_metaformerpro_refine/index.html) | 三方案各3种子、共九次新训练；127万/215万参数均未改善验证；保留32万参数原圆周头；dY与角度信号诊断 |
 | 2026-10-24 | [MetaformerPro：新层序1000样本训练与验证](reports/2026-10-24_metaformerpro_topmetal1000/README.md) · [离线 HTML](reports/2026-10-24_metaformerpro_topmetal1000/index.html) | 23日训练、24日汇总；厚SiO₂／Au100／As₂Se₃；两种输出头各3种子；固定800/100/100；长波双谷覆盖与候选结构示意 |

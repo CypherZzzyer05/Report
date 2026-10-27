@@ -1,0 +1,336 @@
+{
+  "scope": "existing completed corrected topmetal dataset; geometry-only, no FDTD or training",
+  "dataset": "D:\\projects\\MetaformerPro_depth\\Metaformer_As2Se3\\examples\\jc220_topmetal_1000\\dataset.npz",
+  "dataset_sha256": "bc0f21a90ed7dcb3a228c81dfef023a0425cfed618a8bc275cc6487b4430621d",
+  "count": 1000,
+  "method": {
+    "distance": "Euclidean vertex-to-edge distance in both directions for disjoint convex polygons",
+    "periodicity": "all 16 polygon pairs in each of eight neighboring cells; central self pairs excluded",
+    "validation": "analytic unrotated and common-45deg checks; scalar closest points agrees with vectorized batch minimum",
+    "important": "dX/dY are nominal unrotated gaps; positive geometric clearance is not a manufacturing minimum"
+  },
+  "statistics_nm": {
+    "intra_cell": {
+      "minimum": 13.875974346029963,
+      "p1": 24.677766031346934,
+      "p5": 37.85410255195407,
+      "p10": 44.75614850738252,
+      "median": 69.53826334272192,
+      "p90": 98.42931758655857,
+      "p95": 106.2224494636928,
+      "maximum": 135.64570408623968
+    },
+    "neighbor_cell": {
+      "minimum": 4.614644563853016,
+      "p1": 23.54229041276363,
+      "p5": 46.616128816923016,
+      "p10": 58.775536199385336,
+      "median": 112.89120546596499,
+      "p90": 168.89130963100985,
+      "p95": 182.6090393466751,
+      "maximum": 237.16596785938907
+    },
+    "global": {
+      "minimum": 4.614644563853016,
+      "p1": 20.0824986882082,
+      "p5": 34.62234460408844,
+      "p10": 41.75673769482392,
+      "median": 67.69557480588855,
+      "p90": 95.65685953582015,
+      "p95": 103.70754046463465,
+      "maximum": 131.36049414300203
+    }
+  },
+  "counts_global_below_nm": {
+    "5": 1,
+    "10": 1,
+    "20": 10,
+    "30": 34,
+    "40": 87,
+    "50": 190,
+    "80": 697,
+    "100": 929
+  },
+  "threshold_interpretation": "descriptive cutoffs only; not validated fabrication capability",
+  "global_limiting_source_counts": {
+    "intra_cell": 858,
+    "neighbor_cell": 142
+  },
+  "narrowest_sample": {
+    "parameters": {
+      "p": 645.7021059249089,
+      "l": 207.87038560064002,
+      "h": 362.7942305208299,
+      "alpha_x": 128.3679657987256,
+      "alpha_y": 139.27498525844635,
+      "theta_odd_deg": 44.7046094658308,
+      "theta_even_deg": -44.90552377280074
+    },
+    "intra_cell_min_gap_nm": 42.27052860202875,
+    "neighbor_cell_min_gap_nm": 4.614644563853016,
+    "global_min_gap_nm": 4.614644563853016,
+    "height_over_min_gap": 78.6180225802512,
+    "nearest_pair": {
+      "quadrants": [
+        "III",
+        "II"
+      ],
+      "neighbor_translation_in_periods": [
+        0,
+        -1
+      ],
+      "minimum_gap_nm": 4.614644563853016,
+      "closest_points_nm": [
+        [
+          -168.8769670463753,
+          -320.55729128047665
+        ],
+        [
+          -168.36154484787497,
+          -325.1430610531529
+        ]
+      ]
+    },
+    "hypothetical_taper": [
+      {
+        "sidewall_angle_from_vertical_deg": 0.0,
+        "bottom_side_length_nm": 207.87038560064002,
+        "bottom_width_increase_nm": 0.0,
+        "minimum_intra_cell_bottom_gap_nm": 42.27052860202875,
+        "minimum_periodic_bottom_gap_nm": 4.614644563853016,
+        "minimum_global_bottom_gap_nm": 4.614644563853016,
+        "same_cell_overlap_or_touch": false,
+        "periodic_overlap_or_touch": false
+      },
+      {
+        "sidewall_angle_from_vertical_deg": 1.0,
+        "bottom_side_length_nm": 220.53557929928766,
+        "bottom_width_increase_nm": 12.665193698647641,
+        "minimum_intra_cell_bottom_gap_nm": 24.362366271256775,
+        "minimum_periodic_bottom_gap_nm": 0.0,
+        "minimum_global_bottom_gap_nm": 0.0,
+        "same_cell_overlap_or_touch": false,
+        "periodic_overlap_or_touch": true
+      },
+      {
+        "sidewall_angle_from_vertical_deg": 2.0,
+        "bottom_side_length_nm": 233.2084929945478,
+        "bottom_width_increase_nm": 25.33810739390779,
+        "minimum_intra_cell_bottom_gap_nm": 6.460085331819158,
+        "minimum_periodic_bottom_gap_nm": 0.0,
+        "minimum_global_bottom_gap_nm": 0.0,
+        "same_cell_overlap_or_touch": false,
+        "periodic_overlap_or_touch": true
+      }
+    ],
+    "sample_id": 967
+  },
+  "examples": {
+    "true_sample207": {
+      "parameters": {
+        "p": 689.4220905640685,
+        "l": 189.66888213889874,
+        "h": 355.1814047665215,
+        "alpha_x": 139.92706252569545,
+        "alpha_y": 104.66593067867572,
+        "theta_odd_deg": 2.8109415255014483,
+        "theta_even_deg": 35.769904223950576
+      },
+      "intra_cell_min_gap_nm": 67.98083768160531,
+      "neighbor_cell_min_gap_nm": 133.39337096947253,
+      "global_min_gap_nm": 67.98083768160531,
+      "height_over_min_gap": 5.224728274606548,
+      "nearest_pair": {
+        "quadrants": [
+          "II",
+          "III"
+        ],
+        "neighbor_translation_in_periods": [
+          0,
+          0
+        ],
+        "minimum_gap_nm": 67.98083768160531,
+        "closest_points_nm": [
+          [
+            -186.3101601880562,
+            14.787769758854324
+          ],
+          [
+            -182.9763454716297,
+            -53.11127273313747
+          ]
+        ]
+      },
+      "hypothetical_taper": [
+        {
+          "sidewall_angle_from_vertical_deg": 0.0,
+          "bottom_side_length_nm": 189.66888213889874,
+          "bottom_width_increase_nm": 0.0,
+          "minimum_intra_cell_bottom_gap_nm": 67.98083768160531,
+          "minimum_periodic_bottom_gap_nm": 133.39337096947253,
+          "minimum_global_bottom_gap_nm": 67.98083768160531,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        },
+        {
+          "sidewall_angle_from_vertical_deg": 1.0,
+          "bottom_side_length_nm": 202.06831110188907,
+          "bottom_width_increase_nm": 12.399428962990328,
+          "minimum_intra_cell_bottom_gap_nm": 53.2063064568139,
+          "minimum_periodic_bottom_gap_nm": 118.61883974468114,
+          "minimum_global_bottom_gap_nm": 53.2063064568139,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        },
+        {
+          "sidewall_angle_from_vertical_deg": 2.0,
+          "bottom_side_length_nm": 214.47529806611243,
+          "bottom_width_increase_nm": 24.806415927213692,
+          "minimum_intra_cell_bottom_gap_nm": 38.422769500746625,
+          "minimum_periodic_bottom_gap_nm": 103.83530278861386,
+          "minimum_global_bottom_gap_nm": 38.422769500746625,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        }
+      ]
+    },
+    "prediction4_sample207": {
+      "parameters": {
+        "p": 682.8086721897125,
+        "l": 192.8079789876938,
+        "h": 362.3635232448578,
+        "alpha_x": 140.17869472503662,
+        "alpha_y": 127.94323325157166,
+        "theta_odd_deg": -33.93276572227478,
+        "theta_even_deg": -2.0648181438446045
+      },
+      "intra_cell_min_gap_nm": 91.3684468547193,
+      "neighbor_cell_min_gap_nm": 120.42035760699436,
+      "global_min_gap_nm": 91.3684468547193,
+      "height_over_min_gap": 3.965959099874327,
+      "nearest_pair": {
+        "quadrants": [
+          "II",
+          "III"
+        ],
+        "neighbor_translation_in_periods": [
+          0,
+          0
+        ],
+        "minimum_gap_nm": 91.3684468547193,
+        "closest_points_nm": [
+          [
+            -189.37245476902854,
+            64.73385334933887
+          ],
+          [
+            -192.66446676208056,
+            -26.575268526195913
+          ]
+        ]
+      },
+      "hypothetical_taper": [
+        {
+          "sidewall_angle_from_vertical_deg": 0.0,
+          "bottom_side_length_nm": 192.8079789876938,
+          "bottom_width_increase_nm": 0.0,
+          "minimum_intra_cell_bottom_gap_nm": 91.3684468547193,
+          "minimum_periodic_bottom_gap_nm": 120.42035760699436,
+          "minimum_global_bottom_gap_nm": 91.3684468547193,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        },
+        {
+          "sidewall_angle_from_vertical_deg": 1.0,
+          "bottom_side_length_nm": 205.45813663940714,
+          "bottom_width_increase_nm": 12.650157651713357,
+          "minimum_intra_cell_bottom_gap_nm": 76.33227659313665,
+          "minimum_periodic_bottom_gap_nm": 105.38418734541176,
+          "minimum_global_bottom_gap_nm": 76.33227659313665,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        },
+        {
+          "sidewall_angle_from_vertical_deg": 2.0,
+          "bottom_side_length_nm": 218.11600512259628,
+          "bottom_width_increase_nm": 25.30802613490249,
+          "minimum_intra_cell_bottom_gap_nm": 61.28694111969494,
+          "minimum_periodic_bottom_gap_nm": 90.33885187197001,
+          "minimum_global_bottom_gap_nm": 61.28694111969494,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        }
+      ]
+    },
+    "prediction12_sample207": {
+      "parameters": {
+        "p": 679.0044462680817,
+        "l": 188.34141552448273,
+        "h": 361.5651321411133,
+        "alpha_x": 137.43597149848938,
+        "alpha_y": 123.92585635185242,
+        "theta_odd_deg": 10.617502927780151,
+        "theta_even_deg": 11.457887291908264
+      },
+      "intra_cell_min_gap_nm": 117.20849509326044,
+      "neighbor_cell_min_gap_nm": 157.46701441300536,
+      "global_min_gap_nm": 117.20849509326044,
+      "height_over_min_gap": 3.0848031267138376,
+      "nearest_pair": {
+        "quadrants": [
+          "II",
+          "III"
+        ],
+        "neighbor_translation_in_periods": [
+          0,
+          0
+        ],
+        "minimum_gap_nm": 117.20849509326044,
+        "closest_points_nm": [
+          [
+            -236.47588304342835,
+            45.132870455793835
+          ],
+          [
+            -214.88002879210853,
+            -70.06891078556808
+          ]
+        ]
+      },
+      "hypothetical_taper": [
+        {
+          "sidewall_angle_from_vertical_deg": 0.0,
+          "bottom_side_length_nm": 188.34141552448273,
+          "bottom_width_increase_nm": 0.0,
+          "minimum_intra_cell_bottom_gap_nm": 117.20849509326044,
+          "minimum_periodic_bottom_gap_nm": 157.46701441300536,
+          "minimum_global_bottom_gap_nm": 117.20849509326044,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        },
+        {
+          "sidewall_angle_from_vertical_deg": 1.0,
+          "bottom_side_length_nm": 200.96370123908812,
+          "bottom_width_increase_nm": 12.622285714605397,
+          "minimum_intra_cell_bottom_gap_nm": 104.49432303415745,
+          "minimum_periodic_bottom_gap_nm": 144.75284235390234,
+          "minimum_global_bottom_gap_nm": 104.49432303415745,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        },
+        {
+          "sidewall_angle_from_vertical_deg": 2.0,
+          "bottom_side_length_nm": 213.59368079598897,
+          "bottom_width_increase_nm": 25.252265271506246,
+          "minimum_intra_cell_bottom_gap_nm": 91.77240112396164,
+          "minimum_periodic_bottom_gap_nm": 132.0309204437065,
+          "minimum_global_bottom_gap_nm": 91.77240112396164,
+          "same_cell_overlap_or_touch": false,
+          "periodic_overlap_or_touch": false
+        }
+      ]
+    }
+  },
+  "taper_interpretation": "hypothetical outward straight sidewall beta from vertical, top CD and centers fixed; bottom L=top L+2H*tan(beta), not measured As2Se3 process data",
+  "rough_300nm_height_2deg_2Htanbeta_nm": 20.952461695048637
+}
