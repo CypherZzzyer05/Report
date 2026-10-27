@@ -2,10 +2,11 @@
 
 此仓库集中保存报告、图表与对应数据；生成器代码保存在各自独立仓库。
 
-新层序1000样本对应的[模型项目及权重](https://github.com/CypherZzzyer05/Optics_design/tree/35af85b/Metaformer_As2Se3)已单独归档，报告内的曲线为冻结测试结果或已有FDTD数据。
+最新的[模型实验与保留权重](https://github.com/CypherZzzyer05/Optics_design/tree/339aaff/Metaformer_As2Se3)已单独归档，报告区分训练、验证、测试曲线与已有FDTD光谱。
 
 | 日期 | 报告 | 内容 |
 | --- | --- | --- |
+| 2026-10-27 | [MetaformerPro：新层序数据上的进一步优化](reports/2026-10-27_metaformerpro_refine/README.md) · [离线 HTML](reports/2026-10-27_metaformerpro_refine/index.html) | 三方案各3种子、共九次新训练；127万/215万参数均未改善验证；保留32万参数原圆周头；dY与角度信号诊断 |
 | 2026-10-24 | [MetaformerPro：新层序1000样本训练与验证](reports/2026-10-24_metaformerpro_topmetal1000/README.md) · [离线 HTML](reports/2026-10-24_metaformerpro_topmetal1000/index.html) | 23日训练、24日汇总；厚SiO₂／Au100／As₂Se₃；两种输出头各3种子；固定800/100/100；长波双谷覆盖与候选结构示意 |
 | 2026-10-22 | [角度镜像同谱、金层与网格核对](reports/2026-10-22_rotation_jc220/README.md) | 12组完整器件与2组平膜；角度镜像等价；金层影响明显；带金局部网格未收敛，暂缓大批量生产；服务器单样本参考包 |
 | 2026-10-22 | [数据生成器 2.2.0：Au 损耗修正与运行验证](reports/2026-10-22_generator220_release/README.md) | 新 Au 模型通过全部固定材料门槛；平膜 8/4 nm 解析核对；一个完整四聚体真实求解成功；106 项程序测试；服务器更新说明 |

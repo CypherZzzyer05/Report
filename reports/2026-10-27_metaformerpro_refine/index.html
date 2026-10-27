@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MetaformerPro：新层序数据上的进一步优化</title><style>
+body{max-width:1100px;margin:36px auto;padding:0 24px;font:16px/1.8 'Microsoft YaHei',sans-serif;color:#233044}
+h1{font-size:29px;line-height:1.4}h2{margin-top:2em;border-bottom:1px solid #d5e0e9;padding-bottom:.3em;font-size:23px}
+img{display:block;width:100%;height:auto;margin:20px 0}table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}
+td,th{border:1px solid #d5dfe7;padding:9px;text-align:left}th{background:#eaf1f7}
+code{font-family:Consolas,monospace;overflow-wrap:anywhere}pre{background:#f2f5f8;padding:16px;overflow:auto}
+pre code{overflow-wrap:normal}a{color:#1768ac}strong{color:#133f60}
+footer{margin-top:36px;border-top:1px solid #d5e0e9;padding-top:16px;font-size:14px}
+@media(max-width:650px){body{padding:0 14px;font-size:15px}table{display:block;overflow-x:auto}h1{font-size:24px}}
+@media print{body{margin:0;font-size:11pt}h2{break-after:avoid}img{break-inside:avoid}}
+</style></head><body><h1>MetaformerPro：新层序数据上的进一步优化</h1>
+<p>2026-10-27。分支 <code>codex/metaformerpro-topmetal-refine</code>，独立工作树 <code>D:/projects/MetaformerPro_refine/Metaformer_As2Se3</code>。</p>
+<p>本轮三个候选均未满足预设替换门槛，<strong>继续采用原圆周角度头</strong>。<code>models/metaformerpro_refined.pt</code> 保存被保留的基线权重，部署版本仍为0.2.0；原文件也继续保留。</p>
+<p>这轮只优化“反射谱→七个结构参数”的逆向模型。冻结选择后只测试基线和被选中的方案，不把没有胜出的候选逐一送到测试集继续挑选。原有100条测试样本已在前几轮查看过，<strong>这是既有测试集上的重复比较，不是新增盲测</strong>。三种子波动表示训练随机性，不是物理精度的置信区间。</p>
+<h2>数据和诊断</h2>
+<p>沿用同一1000条生成器2.2.0数值数据，固定800训练/100验证/100测试。数据SHA256：<code>bc0f21a90ed7dcb3a228c81dfef023a0425cfed618a8bc275cc6487b4430621d</code>。层序自下而上为厚SiO₂、100 nm被动JC Au、As₂Se₃四聚体，基板延伸至下PML，采用金属局部8 nm网格。材料、层序和逐样本完整性核验沿用<a href="https://github.com/CypherZzzyer05/Report/tree/main/reports/2026-10-24_metaformerpro_topmetal1000">上一轮报告</a>。本批仍为 <code>pipeline_validation</code>，没有新增FDTD或网格收敛论证。</p>
+<p>仅用训练/验证的<a href="signal_diagnosis.json">轻量诊断</a>发现：1300–1700 nm有377/400个点受到原0.02标准差下限影响，但最小归一化标准差仍为0.658；降低下限的岭回归没有改善验证结果。dY与单个波长的训练集最大线性关联仅 |r|=0.106。这些结果提示dY的可提取信号较弱，不能据此证明物理上无法辨识，也不能把全部误差归因于归一化。</p>
+<p>补充比较只在800条训练标签上拟合一个常数角对，验证集镜像等价角MAE已可达到 <strong>15.09° / 15.89°</strong>，这部分改善并没有使用光谱。因而，相对原始角均值常数的全部提升不能都解释成网络学到了角度信息。同一α的圆周岭回归中，固定联合镜像代表使镜像验证MSE从0.029702降至0.027431；同时原始标签周期MSE变差，两种评价均保留在诊断JSON中。这是标签表示对照，不是本轮神经模型的性能提升。</p>
+<p>原先严格双主谷标准在这批数据中仅覆盖3/1000条；两个严格主谷均&gt;1000 nm的样本为0条。691条在1000 nm以上存在普通明显谷，两种计数不能混用。本轮优化不能补出训练数据未覆盖的长波双谷目标。</p>
+<h2>三项有限改动</h2>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>改动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline</td>
+<td>上一轮96维、4层、圆周头，原始0.02标准差下限；沿用三个已有运行</td>
+</tr>
+<tr>
+<td>standardized</td>
+<td>标准差下限改为0.005，其他结构相同；检验弱长波缩放是否有帮助</td>
+</tr>
+<tr>
+<td>position_readout</td>
+<td>同样0.005下限，将100个波长分块位置保留到输出层，避免先池化为一个向量</td>
+</tr>
+<tr>
+<td>encoder192</td>
+<td>同样0.005下限，编码维度96→192，层数不变；检验扩大骨干容量</td>
+</tr>
+</tbody>
+</table>
+<p>三个候选各用42/43/44种子从随机初始化训练；AdamW、batch8、学习率3e-4、weight decay 0.001，最多100轮，20轮无足够改善早停。预处理统计只由800条训练谱拟合并写入权重。三个已有基线重新载入后的验证预测已与归档对齐。</p>
+<p>替换基线要求：三种子平均联合镜像验证MSE至少降低1%；五尺寸验证MSE最多增加2%、dX MAE最多增加5%、dY MAE最多增加2%。在满足全部条件者中选平均验证MSE最低者，部署其验证表现居中的种子；没有合格者则保留基线。选择冻结后再评估既有测试集。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">参数量</th>
+<th style="text-align: right;">保存权重训练MSE均值</th>
+<th style="text-align: right;">镜像验证MSE均值 ± 标准差</th>
+<th style="text-align: right;">五尺寸验证MSE</th>
+<th style="text-align: right;">dX MAE/nm</th>
+<th style="text-align: right;">dY MAE/nm</th>
+<th>尺寸门槛 / 1%改善</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline</td>
+<td style="text-align: right;">320,938</td>
+<td style="text-align: right;">0.018951</td>
+<td style="text-align: right;">0.024448 ± 0.000623</td>
+<td style="text-align: right;">0.021820</td>
+<td style="text-align: right;">5.844</td>
+<td style="text-align: right;">13.791</td>
+<td>是 / 否</td>
+</tr>
+<tr>
+<td>standardized</td>
+<td style="text-align: right;">320,938</td>
+<td style="text-align: right;">0.021060</td>
+<td style="text-align: right;">0.024715 ± 0.000949</td>
+<td style="text-align: right;">0.022236</td>
+<td style="text-align: right;">6.093</td>
+<td style="text-align: right;">13.974</td>
+<td>是 / 否</td>
+</tr>
+<tr>
+<td>encoder192</td>
+<td style="text-align: right;">1,268,554</td>
+<td style="text-align: right;">0.019830</td>
+<td style="text-align: right;">0.025442 ± 0.000827</td>
+<td style="text-align: right;">0.022832</td>
+<td style="text-align: right;">6.039</td>
+<td style="text-align: right;">13.860</td>
+<td>否 / 否</td>
+</tr>
+<tr>
+<td>position_readout</td>
+<td style="text-align: right;">2,145,609</td>
+<td style="text-align: right;">0.020116</td>
+<td style="text-align: right;">0.026661 ± 0.000499</td>
+<td style="text-align: right;">0.023780</td>
+<td style="text-align: right;">6.093</td>
+<td style="text-align: right;">14.447</td>
+<td>否 / 否</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="验证方案对照和部署运行曲线" src="validation_comparison.png" /></p>
+<h2>收敛与训练验证差距</h2>
+<p>本轮新增九次训练合计15.1分钟；该数值不包含沿用的三次基线运行，也不包含脚本启动和图表整理。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">种子</th>
+<th style="text-align: right;">保存轮次</th>
+<th style="text-align: right;">总轮数</th>
+<th style="text-align: right;">训练秒数</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">177.9</td>
+<td>沿用已有运行</td>
+</tr>
+<tr>
+<td>baseline</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">99.2</td>
+<td>沿用已有运行</td>
+</tr>
+<tr>
+<td>baseline</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">111.0</td>
+<td>沿用已有运行</td>
+</tr>
+<tr>
+<td>standardized</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">144.4</td>
+<td>本轮训练</td>
+</tr>
+<tr>
+<td>standardized</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">94.1</td>
+<td>本轮训练</td>
+</tr>
+<tr>
+<td>standardized</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">130.2</td>
+<td>本轮训练</td>
+</tr>
+<tr>
+<td>position_readout</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">67.3</td>
+<td>本轮训练</td>
+</tr>
+<tr>
+<td>position_readout</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">53.5</td>
+<td>本轮训练</td>
+</tr>
+<tr>
+<td>position_readout</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">59.0</td>
+<td>本轮训练</td>
+</tr>
+<tr>
+<td>encoder192</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">88.8</td>
+<td>本轮训练</td>
+</tr>
+<tr>
+<td>encoder192</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">126.9</td>
+<td>本轮训练</td>
+</tr>
+<tr>
+<td>encoder192</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">141.6</td>
+<td>本轮训练</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">保存权重训练eval MSE均值</th>
+<th style="text-align: right;">验证MSE均值</th>
+<th style="text-align: right;">验证−训练</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline</td>
+<td style="text-align: right;">0.018951</td>
+<td style="text-align: right;">0.024448</td>
+<td style="text-align: right;">+0.005496</td>
+</tr>
+<tr>
+<td>standardized</td>
+<td style="text-align: right;">0.021060</td>
+<td style="text-align: right;">0.024715</td>
+<td style="text-align: right;">+0.003655</td>
+</tr>
+<tr>
+<td>position_readout</td>
+<td style="text-align: right;">0.020116</td>
+<td style="text-align: right;">0.026661</td>
+<td style="text-align: right;">+0.006545</td>
+</tr>
+<tr>
+<td>encoder192</td>
+<td style="text-align: right;">0.019830</td>
+<td style="text-align: right;">0.025442</td>
+<td style="text-align: right;">+0.005612</td>
+</tr>
+</tbody>
+</table>
+<p>上表在保存的同一权重上以eval模式比较训练与验证。正差距说明训练集拟合优于验证集，不能仅凭训练损失继续下降认定泛化继续改善。图中逐轮训练曲线是含dropout的批损失，与表中的保存权重eval误差不是同一口径；虚线标出最终保存轮次。</p>
+<h2>冻结后的测试</h2>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">原始标签周期MSE</th>
+<th style="text-align: right;">镜像等价MSE</th>
+<th style="text-align: right;">五尺寸MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baseline</td>
+<td style="text-align: right;">0.034444</td>
+<td style="text-align: right;">0.025325</td>
+<td style="text-align: right;">0.022949</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align: right;">保留模型的三种子平均MAE</th>
+<th>单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P</td>
+<td style="text-align: right;">4.412</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>L</td>
+<td style="text-align: right;">1.434</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>H</td>
+<td style="text-align: right;">4.109</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>dX</td>
+<td style="text-align: right;">6.394</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>dY</td>
+<td style="text-align: right;">14.527</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>奇数角</td>
+<td style="text-align: right;">12.476</td>
+<td>°</td>
+</tr>
+<tr>
+<td>偶数角</td>
+<td style="text-align: right;">12.931</td>
+<td>°</td>
+</tr>
+</tbody>
+</table>
+<p>长度按真实nm还原；两个角采用<strong>同一联合镜像代表</strong>后计算周期误差，没有分别为每个角挑选有利标签。表中为三个种子的平均，实际部署为单个seed 42；原始标签周期MSE同时保留，避免将对称等价评价误读为精确标签恢复。</p>
+<p><img alt="逐参数测试误差" src="parameter_errors.png" /></p>
+<p>部署种子的100条测试结构中，100/100通过几何检查。CPU推理与保存的测试预测最大归一化差为8.87e-07。训练集标准化检查通过。几何合法与参数MAE都不能证明输出候选已经复现目标光谱；本轮没有候选FDTD回验。</p>
+<h2>使用本轮权重</h2>
+<p>原有 <code>models/metaformerpro_topmetal.pt</code> 继续保留，本轮冻结输出单独保存为 <code>models/metaformerpro_refined.pt</code>，SHA256：<code>8950779ce4fd3f467cdc4334190650963735d31c0f1c613aa2a7edc1cd549dfb</code>。PyCharm在本项目中使用解释器 <code>D:/Anaconda3/envs/transformer_env/python.exe</code>，运行项19读取固定输入并展示结构；输入CSV仍要求700–1700 nm等间距1000点、反射率0–1。</p>
+<pre><code class="language-powershell">python train_metaformerpro_refine.py all
+python summarize_topmetal_refine.py
+python predict_metaformerpro.py --checkpoint models/metaformerpro_refined.pt --spectrum inputs/target_topmetal.csv --output results/topmetal_refine/prediction_207.json --show
+</code></pre>
+<p>207号继续作为预先固定的界面示例，不按本轮测试误差挑选“最佳”结构。目标谱是已有数据的输入曲线，模型输出仍为待回验候选。</p>
+<p><img alt="冻结选择的结构候选与输入目标谱" src="prediction_207.png" /></p>
+<p>逐运行指标、冻结选择及核验分别保存在 <a href="validation_results.json">validation_results.json</a>、<a href="selection.json">selection.json</a>、<a href="test_metrics.json">test_metrics.json</a>、<a href="verification.json">verification.json</a>。</p><footer><p><a href="README.md">Markdown 原文</a> ·
+<a href="summary.json">训练汇总</a> · <a href="selection.json">冻结选择</a> ·
+<a href="test_metrics.json">逐次测试指标</a> · <a href="verification.json">重载与身份核验</a> ·
+<a href="prediction_207.json">演示结构参数</a></p>
+<p><a href="https://github.com/CypherZzzyer05/Optics_design/tree/339aaff/Metaformer_As2Se3">本轮模型代码、配置与部署权重（339aaff）</a></p>
+<p><a href="../../README.md">报告仓库目录</a></p></footer></body></html>
