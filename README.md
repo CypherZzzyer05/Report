@@ -6,6 +6,7 @@
 
 | 日期 | 报告 | 内容 |
 | --- | --- | --- |
+| 2026-10-27 | [MetaformerPro：共振局部细分输入编码](reports/2026-10-27_metaformerpro_resonance/README.md) · [离线 HTML](reports/2026-10-27_metaformerpro_resonance/index.html) | 六次新训练；同参数量均匀加密与共振取样对照；共振验证改善0.41%，未优于均匀加密，继续保留原模型；实验权重另存 |
 | 2026-10-27 | [光谱信息、特征表达与真实加工间隙](reports/2026-10-27_information_and_fabrication/README.md) · [离线 HTML](reports/2026-10-27_information_and_fabrication/index.html) | 文献调研与1000条旋转/周期几何核对；最小开口4.615 nm，190条低于50 nm；区分可辨识性与特征编码，未新增训练或FDTD |
 | 2026-10-27 | [MetaformerPro：4／8／12层编码器对照](reports/2026-10-27_metaformerpro_depth/README.md) · [离线 HTML](reports/2026-10-27_metaformerpro_depth/index.html) | 六次新训练；12层验证误差降2.8%，测试误差升6.3%；深度实验权重与全部曲线保留，现用4层权重不覆盖 |
 | 2026-10-27 | [MetaformerPro：新层序数据上的进一步优化](reports/2026-10-27_metaformerpro_refine/README.md) · [离线 HTML](reports/2026-10-27_metaformerpro_refine/index.html) | 三方案各3种子、共九次新训练；127万/215万参数均未改善验证；保留32万参数原圆周头；dY与角度信号诊断 |

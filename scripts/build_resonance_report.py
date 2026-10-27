@@ -1,0 +1,26 @@
+"""Render the fixed-budget resonance tokenization experiment for offline reading."""
+from pathlib import Path
+
+import markdown
+
+root = Path(__file__).resolve().parents[1]
+folder = root / "reports/2026-10-27_metaformerpro_resonance"
+body = markdown.markdown((folder / "README.md").read_text(encoding="utf-8"),
+                         extensions=["tables", "fenced_code"])
+style = """
+body{max-width:1100px;margin:36px auto;padding:0 24px;font:16px/1.8 'Microsoft YaHei',sans-serif;color:#233044}
+h1{font-size:29px;line-height:1.4}h2{margin-top:2em;border-bottom:1px solid #d5e0e9;padding-bottom:.3em;font-size:23px}
+img{display:block;width:100%;height:auto;margin:20px 0}table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}
+td,th{border:1px solid #d5dfe7;padding:9px;text-align:left}th{background:#eaf1f7}
+code{font-family:Consolas,monospace;overflow-wrap:anywhere}pre{background:#f2f5f8;padding:16px;overflow:auto}
+a{color:#1768ac}strong{color:#133f60}
+@media(max-width:650px){body{padding:0 14px;font-size:15px}table{display:block;overflow-x:auto}h1{font-size:24px}}
+@media print{body{margin:0;font-size:11pt}h2{break-after:avoid}img{break-inside:avoid}}
+"""
+(folder / "index.html").write_text(
+    '<!doctype html>\n<html lang="zh-CN"><head><meta charset="utf-8">'
+    '<meta name="viewport" content="width=device-width,initial-scale=1">'
+    f'<title>MetaformerPro 共振局部细分输入编码试验</title><style>{style}</style></head>'
+    f'<body>{body}<p><a href="../../README.md">报告目录</a></p></body></html>\n',
+    encoding="utf-8", newline="\n")
+print(folder / "index.html")

@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MetaformerPro 共振局部细分输入编码试验</title><style>
+body{max-width:1100px;margin:36px auto;padding:0 24px;font:16px/1.8 'Microsoft YaHei',sans-serif;color:#233044}
+h1{font-size:29px;line-height:1.4}h2{margin-top:2em;border-bottom:1px solid #d5e0e9;padding-bottom:.3em;font-size:23px}
+img{display:block;width:100%;height:auto;margin:20px 0}table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}
+td,th{border:1px solid #d5dfe7;padding:9px;text-align:left}th{background:#eaf1f7}
+code{font-family:Consolas,monospace;overflow-wrap:anywhere}pre{background:#f2f5f8;padding:16px;overflow:auto}
+a{color:#1768ac}strong{color:#133f60}
+@media(max-width:650px){body{padding:0 14px;font-size:15px}table{display:block;overflow-x:auto}h1{font-size:24px}}
+@media print{body{margin:0;font-size:11pt}h2{break-after:avoid}img{break-inside:avoid}}
+</style></head><body><h1>MetaformerPro：共振局部细分输入编码试验</h1>
+<p>2026-10-27。独立分支 <code>codex/metaformerpro-resonance-tokenization</code>，工作树 <code>D:/projects/MetaformerPro_resonance/Metaformer_As2Se3</code>。原模型和生成器保留。</p>
+<p>两种新输入编码均未满足预设替换条件，<strong>继续保留现用原均匀分块模型</strong>。本轮保存的冻结输出不是已证明有效的共振编码升级。</p>
+<h2>这次具体改变了什么</h2>
+<p>现用100个全谱token保留；新增两种132-token输入进行对照：均匀加密组在全波段附加32个token，共振组在输入谱的可信谷附近附加32个token。二者共用原Conv10投影和同一个4层编码器，均无新增可训练参数。每个附加token保留实际波长中心、覆盖宽度的固定位置编码。没有外接ResNet、LSTM或正向神经网络。</p>
+<p>仅在平滑副本上定位谷和窗口；窗口内取原反射率。窗口最多围绕两个可信谷，不强制所有谱都有两个谷；缺谷时按预定均匀规则补足token。连续插值用于固定输入形状，不会增加原始约1 nm采样的物理分辨率。局部细分是假设能帮助有限网络提取已有形状差异，不能创造缺失信息或打破镜像同谱。</p>
+<p>固定定位规则为11点三阶SG、谷显著度≥0.01、间隔≥20个原网格点；按显著度选最多两谷后按波长排序。窗口总跨度为半突出度宽度的4倍，截在16–240个原网格间隔内，边界仅裁剪。单谷的另一块为全域16token，无谷为全域32token。原始反射率不做局部深度归一化；中心、跨度及附加类型使用固定编码。算法选出的谷不等于已确认的物理模式，宽度也不作为Q值。</p>
+<p><img alt="固定207号输入的全谱与附加token位置" src="sampling_207.png" /></p>
+<p>取样位置和跨度保存在 <a href="sampling_207.json">sampling_207.json</a>。207号为此前固定的界面示例，不按本轮误差挑选。</p>
+<h2>数据与比较规则</h2>
+<p>沿用修正材料及层序的新1000条数据，固定800训练/100验证/100测试。数据SHA256：<code>bc0f21a90ed7dcb3a228c81dfef023a0425cfed618a8bc275cc6487b4430621d</code>。厚SiO₂ / 被动JC Au100 / As₂Se₃四聚体，基板延伸至下PML；金属局部8 nm网格，仍为 <code>pipeline_validation</code>，没有新增FDTD或网格收敛证明。</p>
+<p>所有训练输入归一化统计只由800条训练谱拟合；谷窗口完全由当前输入谱确定，不使用真实几何或测试标签。3个种子均为42/43/44，维度96、编码器4层、注意力4头、前馈192、dropout0.1、圆周角度头；AdamW、batch8、学习率3e-4、weight decay0.001，最多100轮，20轮无足够改善早停。现用基线的三次已有运行复用，本轮新增6次训练。</p>
+<p>验证门槛沿用：三种子平均镜像MSE至少降低1%，五尺寸MSE最多增加2%，dX MAE最多增加5%，dY MAE最多增加2%；合格者中选最低验证误差，以该方案验证表现居中的种子冻结候选。<strong>只在选择冻结后评估原基线及被选中的方案。</strong> 既有100条测试此前已经查看过，属于重复比较，不是新增盲测。没有根据本轮测试结果再选方案或种子。</p>
+<h2>验证结果</h2>
+<p>共振局部细分相对相同132个token的均匀加密组，三种子平均验证MSE增加0.2%；相对原100个token基线降低0.4%。这是当前数据和固定配方上的观察，不能仅凭单个种子或总loss判断其稳定优越性。 本轮未通过预设的共振取样机制门槛，尚未证实按谷分配优于均匀附加取样。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">token数</th>
+<th style="text-align: right;">参数量</th>
+<th style="text-align: right;">保存权重训练eval MSE</th>
+<th style="text-align: right;">镜像验证MSE均值 ± 标准差</th>
+<th style="text-align: right;">五尺寸验证MSE</th>
+<th style="text-align: right;">dX MAE/nm</th>
+<th style="text-align: right;">dY MAE/nm</th>
+<th>尺寸门槛 / 1%改善</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>均匀加密对照</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">320,938</td>
+<td style="text-align: right;">0.018850</td>
+<td style="text-align: right;">0.024301 ± 0.000752</td>
+<td style="text-align: right;">0.021879</td>
+<td style="text-align: right;">6.111</td>
+<td style="text-align: right;">13.704</td>
+<td>是 / 否</td>
+</tr>
+<tr>
+<td>共振局部细分</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">320,938</td>
+<td style="text-align: right;">0.017867</td>
+<td style="text-align: right;">0.024347 ± 0.000681</td>
+<td style="text-align: right;">0.021746</td>
+<td style="text-align: right;">5.981</td>
+<td style="text-align: right;">13.459</td>
+<td>是 / 否</td>
+</tr>
+<tr>
+<td>原均匀分块</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">320,938</td>
+<td style="text-align: right;">0.018951</td>
+<td style="text-align: right;">0.024448 ± 0.000623</td>
+<td style="text-align: right;">0.021820</td>
+<td style="text-align: right;">5.844</td>
+<td style="text-align: right;">13.791</td>
+<td>是 / 否</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="验证比较与全部运行曲线" src="resonance_comparison.png" /></p>
+<p>新训练合计9.4分钟，不含复用基线和整理脚本。种子标准差描述训练随机性，不代表物理准确度置信区间。训练eval表格来自保存权重；曲线虚线是包含dropout的逐轮训练批损失，二者口径不同。</p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">种子</th>
+<th style="text-align: right;">保存轮次</th>
+<th style="text-align: right;">总轮数</th>
+<th style="text-align: right;">训练秒数</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原均匀分块</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">89</td>
+<td style="text-align: right;">177.9</td>
+<td>复用已有运行</td>
+</tr>
+<tr>
+<td>原均匀分块</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">99.2</td>
+<td>复用已有运行</td>
+</tr>
+<tr>
+<td>原均匀分块</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">111.0</td>
+<td>复用已有运行</td>
+</tr>
+<tr>
+<td>均匀加密对照</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">74</td>
+<td style="text-align: right;">101.8</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>均匀加密对照</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">75.3</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>均匀加密对照</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">84.1</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>共振局部细分</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: right;">119.3</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>共振局部细分</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">35</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">86.0</td>
+<td>本轮新训练</td>
+</tr>
+<tr>
+<td>共振局部细分</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">95.4</td>
+<td>本轮新训练</td>
+</tr>
+</tbody>
+</table>
+<h2>冻结后的既有测试</h2>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th style="text-align: right;">原始标签周期MSE</th>
+<th style="text-align: right;">镜像等价MSE</th>
+<th style="text-align: right;">五尺寸MSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原均匀分块</td>
+<td style="text-align: right;">0.034444</td>
+<td style="text-align: right;">0.025325</td>
+<td style="text-align: right;">0.022949</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align: right;">原均匀分块MAE</th>
+<th style="text-align: right;">冻结候选MAE</th>
+<th>单位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P</td>
+<td style="text-align: right;">4.412</td>
+<td style="text-align: right;">4.412</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>L</td>
+<td style="text-align: right;">1.434</td>
+<td style="text-align: right;">1.434</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>H</td>
+<td style="text-align: right;">4.109</td>
+<td style="text-align: right;">4.109</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>dX</td>
+<td style="text-align: right;">6.394</td>
+<td style="text-align: right;">6.394</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>dY</td>
+<td style="text-align: right;">14.527</td>
+<td style="text-align: right;">14.527</td>
+<td>nm</td>
+</tr>
+<tr>
+<td>奇数角</td>
+<td style="text-align: right;">12.476</td>
+<td style="text-align: right;">12.476</td>
+<td>°</td>
+</tr>
+<tr>
+<td>偶数角</td>
+<td style="text-align: right;">12.931</td>
+<td style="text-align: right;">12.931</td>
+<td>°</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="逐参数测试误差" src="parameter_errors.png" /></p>
+<p>表格为三种子平均，单个推理候选使用seed 42。两个角共同选择同一个镜像代表，原始标签周期误差也保留。候选种子的100条测试结构中100/100通过几何合法性检查；该检查不等于满足最小加工间隙。CPU重载预测与归档结果最大归一化差为8.87e-07。几何合法和标签MAE不能证明候选已复现目标谱，本轮没有候选FDTD回验。</p>
+<h2>复现与使用</h2>
+<p>冻结输出：<code>D:\projects\MetaformerPro_resonance\Metaformer_As2Se3\models\metaformerpro_resonance.pt</code>，SHA256：<code>8950779ce4fd3f467cdc4334190650963735d31c0f1c613aa2a7edc1cd549dfb</code>。现用原权重不覆盖。输入仍为700–1700 nm、1000个等间距反射率点；同一输入定位规则用于训练与推理。</p>
+<p>共振方案另保留验证表现居中的seed 42，文件为 <code>models/metaformerpro_resonance_candidate.pt</code>，仅供实验查看，不自动替换现用权重。该文件的身份及是否进入完整测试见 <a href="experimental_candidate.json">experimental_candidate.json</a>。PyCharm运行项23加载此实验候选；运行项17继续加载现用模型。</p>
+<p>本轮18项定向程序测试通过，覆盖采样/缺谷回退、绝对位置与跨度、梯度、132-token集成、旧模型兼容和权重重载。实验候选训练归一化与固定207号CPU/CUDA推理检查见 <a href="candidate_verification.json">candidate_verification.json</a>。</p>
+<pre><code class="language-powershell">python train_metaformerpro_refine.py all --config configs/metaformerpro_topmetal_resonance.json
+python summarize_resonance_study.py
+python predict_metaformerpro.py --checkpoint models/metaformerpro_resonance_candidate.pt --spectrum inputs/target_topmetal.csv --output results/topmetal_resonance/prediction_207.json --show
+</code></pre>
+<p><img alt="共振实验候选的固定207号推理示意，图中光谱为输入目标" src="prediction_207.png" /></p>
+<p>此图读取另行保留的共振实验权重，不代表验证冻结方案已切换。输入谱来自已有数值数据，图中没有候选的FDTD回验曲线。</p>
+<p>逐运行记录见 <a href="validation_results.json">validation_results.json</a>、<a href="selection.json">selection.json</a>、<a href="test_metrics.json">test_metrics.json</a>、<a href="verification.json">verification.json</a>。</p>
+<p>代码、PyCharm运行项与权重已保存在 <a href="https://github.com/CypherZzzyer05/Optics_design/tree/1b31513/Metaformer_As2Se3">Optics_design 的输入编码实验分支（1b31513）</a>。现用原模型文件未修改；实验候选的SHA256为 <code>c16acfe5dbe420500f0ad4f34b2ea75509fabcdba8a07c8ac971a9ad34b668bd</code>。</p><p><a href="../../README.md">报告目录</a></p></body></html>
