@@ -6,6 +6,7 @@
 
 | 日期 | 报告 | 内容 |
 | --- | --- | --- |
+| 2026-10-28 | [四聚体候选的4×4周期延拓示意](reports/2026-10-28_tetramer_array_4x4/README.md) | 按用户图片对应候选绘制16单元、64柱；俯视/三维PNG与SVG，覆盖2.734×2.734 μm；仅几何展示 |
 | 2026-10-28 | [服务器单样本4 nm／2 nm参考启动包](reports/2026-10-28_global4_reference_server/README.md) | 本机原生预检通过，建议5.72 GiB；按用户选择转服务器；提供独立PyCharm项目、固定wheel和监视入口，尚未启动服务器计算 |
 | 2026-10-27 | [光谱相近时的结构差异与检索诊断](reports/2026-10-27_spectral_information_audit/README.md) | 只用训练/验证；现网络dY误差13.79 nm，两种1NN为19.43/17.86 nm；平均谱差小仍可能有局部数个百分点差异；未新增训练/FDTD |
 | 2026-10-27 | [MetaformerPro：共振局部细分输入编码](reports/2026-10-27_metaformerpro_resonance/README.md) · [离线 HTML](reports/2026-10-27_metaformerpro_resonance/index.html) | 六次新训练；同参数量均匀加密与共振取样对照；共振验证改善0.41%，未优于均匀加密，继续保留原模型；实验权重另存 |
