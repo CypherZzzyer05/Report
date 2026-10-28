@@ -1,0 +1,21 @@
+{
+  "archive": "jc220_global4_metal2_server.zip",
+  "archive_sha256": "ef469cd65ec188ed803c6c45dd7f1c6712416ee8e1889af458dcc4c9d72f6083",
+  "archive_bytes": 97180,
+  "wheel_sha256": "35cb97812dd8ab55f2718827f32c4a688cdf2d9d6aa24df32478011404f9adfe",
+  "original_reference_physical_files_unchanged": true,
+  "offline_checks": [
+    "bundled wheel import/version",
+    "exact seven-parameter geometry",
+    "single-sample count and mesh/stack identity",
+    "failed-preflight blocks generate",
+    "successful-preflight invokes limit1",
+    "PyCharm XML parse",
+    "gold model identity",
+    "monitor file states and generation lock"
+  ],
+  "native_local_preflight_passed": true,
+  "native_local_recommended_ram_gib": 5.717768328135561,
+  "native_solver_run_performed": false,
+  "server_started": false
+}
